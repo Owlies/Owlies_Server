@@ -1,0 +1,1 @@
+./skynet Script/Service/config

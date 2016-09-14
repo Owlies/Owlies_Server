@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+package Owlies.Core.ChangeEvents;
+
+message Item {
+    required string name = 1;
+    required int32 price = 2;
+    optional ItemType itemType = 3 [default = Hat];
+    
+}
+
+enum ItemType {
+    Hat = 0;
+    Cape = 1;
+    Weapon = 2;
+    Shoe = 3;
+    Arm_Armour = 4;
+    Leg_Armour = 5;
+    Shirt = 6;
+}
