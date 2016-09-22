@@ -3,13 +3,15 @@ OWLIES_LIBS ?= -lpthread -lm
 SHARED ?= -fPIC --shared
 
 SKYNET_PATH ?= 3rd/skynet
-LUA_INTERFACE_PATH ?= Src/LuaInterface
+PROTOBUF_PATH ?= 3rd/protobuf-c
+OWLIES_SRC ?= Src
+LUA_INTERFACE_PATH ?= $(OWLIES_SRC)/LuaInterface
 LUA_INC ?= $(SKYNET_PATH)/3rd/lua
 LUALIB_INC ?= $(SKYNET_PATH)/lualib-src
 SKYNET_INC ?= $(SKYNET_PATH)/skynet-src
 BUILD_PATH ?= Lib
 
-CFLAGS = -g -O2 -Wall -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC)
+CFLAGS = -g -O2 -Wall -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC) -I$(PROTOBUF_PATH) -I$(OWLIES_SRC)
 
 $(BUILD_PATH) :
 	mkdir $(BUILD_PATH)

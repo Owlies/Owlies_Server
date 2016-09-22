@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "../Protobuf/protobufLoaders/protobufDataTemplateLoader.h"
+#include "Protobuf/protobufLoaders/protobufDataTemplateLoader.h"
 
 static int unpack (lua_State *L) {
 	printf("unpack function called\n");
