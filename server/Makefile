@@ -22,10 +22,16 @@ skynet : 3rd/skynet/Makefile
 	cd $(SKYNET_PATH) && make linux
 	cp -rpf $(SKYNET_PATH)/skynet skynet
 
+$(BUILD_PATH)/protobufDataTemplateLoader.o : $(OWLIES_SRC)/Protobuf/protobufLoaders/protobufDataTemplateLoader.c | $(BUILD_PATH)
+	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
+	
+$(BUILD_PATH)/ProtoBufDataTemplate.pb-c.o : $(OWLIES_SRC)/Protobuf/protobufs/ProtoBufDataTemplate.pb-c.c | $(BUILD_PATH)
+	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
+	
 $(BUILD_PATH)/physic.so : $(LUA_INTERFACE_PATH)/lua_physic.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^
 
-$(BUILD_PATH)/protobufLoader.so : $(LUA_INTERFACE_PATH)/lua_protobufLoader.c | $(BUILD_PATH)
+$(BUILD_PATH)/protobufLoader.so : $(BUILD_PATH)/protobufDataTemplateLoader.o $(BUILD_PATH)/ProtoBufDataTemplate.pb-c.o $(LUA_INTERFACE_PATH)/lua_protobufLoader.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^
 clean:
 	cd $(SKYNET_PATH) && make clean
