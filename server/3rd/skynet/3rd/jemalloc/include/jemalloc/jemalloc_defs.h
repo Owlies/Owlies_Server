@@ -3,10 +3,10 @@
 #define JEMALLOC_HAVE_ATTR 
 
 /* Defined if alloc_size attribute is supported. */
-#define JEMALLOC_HAVE_ATTR_ALLOC_SIZE 
+/* #undef JEMALLOC_HAVE_ATTR_ALLOC_SIZE */
 
 /* Defined if format(gnu_printf, ...) attribute is supported. */
-#define JEMALLOC_HAVE_ATTR_FORMAT_GNU_PRINTF 
+/* #undef JEMALLOC_HAVE_ATTR_FORMAT_GNU_PRINTF */
 
 /* Defined if format(printf, ...) attribute is supported. */
 #define JEMALLOC_HAVE_ATTR_FORMAT_PRINTF 
@@ -15,7 +15,7 @@
  * Define overrides for non-standard allocator-related functions if they are
  * present on the system.
  */
-#define JEMALLOC_OVERRIDE_MEMALIGN 
+/* #undef JEMALLOC_OVERRIDE_MEMALIGN */
 #define JEMALLOC_OVERRIDE_VALLOC 
 
 /*
@@ -25,14 +25,14 @@
  *
  * Match the operating system's prototype.
  */
-#define JEMALLOC_USABLE_SIZE_CONST 
+#define JEMALLOC_USABLE_SIZE_CONST const
 
 /*
  * If defined, specify throw() for the public function prototypes when compiling
  * with C++.  The only justification for this is to match the prototypes that
  * glibc defines.
  */
-#define JEMALLOC_USE_CXX_THROW 
+/* #undef JEMALLOC_USE_CXX_THROW */
 
 #ifdef _MSC_VER
 #  ifdef _WIN64

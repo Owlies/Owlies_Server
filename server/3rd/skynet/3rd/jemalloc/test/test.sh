@@ -1,6 +1,6 @@
 #!/bin/sh
 
-case elf in
+case macho in
   macho)
     export DYLD_FALLBACK_LIBRARY_PATH="lib"
     ;;
@@ -24,7 +24,7 @@ for t in $@; do
     echo
   fi
   echo "=== ${t} ==="
-  ${t} /home/wangzihan/Documents/server/server/3rd/jemalloc/ /home/wangzihan/Documents/server/server/3rd/jemalloc/
+  ${t} /Users/huayu/Projects/owlies/server/3rd/jemalloc/ /Users/huayu/Projects/owlies/server/3rd/jemalloc/
   result_code=$?
   case ${result_code} in
     ${pass_code})

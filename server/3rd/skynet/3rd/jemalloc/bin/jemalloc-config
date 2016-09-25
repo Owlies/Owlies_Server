@@ -62,10 +62,10 @@ case "$1" in
 	echo "gcc"
 	;;
 --cflags)
-	echo "-std=gnu99 -Wall -Werror=declaration-after-statement -Wsign-compare -pipe -g3 -fvisibility=hidden -O3 -funroll-loops"
+	echo "-std=gnu99 -Wall -Werror=declaration-after-statement -Wshorten-64-to-32 -Wsign-compare -pipe -g3 -O3 -funroll-loops"
 	;;
 --cppflags)
-	echo " -D_GNU_SOURCE -D_REENTRANT"
+	echo " -D_REENTRANT"
 	;;
 --ldflags)
 	echo " "

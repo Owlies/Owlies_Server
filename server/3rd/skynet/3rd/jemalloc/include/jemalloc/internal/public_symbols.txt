@@ -18,5 +18,4 @@ mallctlnametomib:je_mallctlnametomib
 mallctlbymib:je_mallctlbymib
 malloc_stats_print:je_malloc_stats_print
 malloc_usable_size:je_malloc_usable_size
-memalign:je_memalign
 valloc:je_valloc

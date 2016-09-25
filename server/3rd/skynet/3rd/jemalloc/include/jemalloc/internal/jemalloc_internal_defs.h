@@ -33,7 +33,7 @@
  * Defined if OSAtomic*() functions are available, as provided by Darwin, and
  * documented in the atomic(3) manual page.
  */
-/* #undef JEMALLOC_OSATOMIC */
+#define JEMALLOC_OSATOMIC 
 
 /*
  * Defined if __sync_add_and_fetch(uint32_t *, uint32_t) and
@@ -65,17 +65,17 @@
  * Defined if OSSpin*() functions are available, as provided by Darwin, and
  * documented in the spinlock(3) manual page.
  */
-/* #undef JEMALLOC_OSSPIN */
+#define JEMALLOC_OSSPIN 
 
 /*
  * Defined if secure_getenv(3) is available.
  */
-#define JEMALLOC_HAVE_SECURE_GETENV 
+/* #undef JEMALLOC_HAVE_SECURE_GETENV */
 
 /*
  * Defined if issetugid(2) is available.
  */
-/* #undef JEMALLOC_HAVE_ISSETUGID */
+#define JEMALLOC_HAVE_ISSETUGID 
 
 /*
  * Defined if _malloc_thread_cleanup() exists.  At least in the case of
@@ -91,7 +91,7 @@
  * Among other things, it must be possible to initialize a mutex without
  * triggering allocation in order for threaded allocation to be safe.
  */
-#define JEMALLOC_THREADED_INIT 
+/* #undef JEMALLOC_THREADED_INIT */
 
 /*
  * Defined if the pthreads implementation defines
@@ -141,7 +141,7 @@
  * JEMALLOC_DSS enables use of sbrk(2) to allocate chunks from the data storage
  * segment (DSS).
  */
-#define JEMALLOC_DSS 
+/* #undef JEMALLOC_DSS */
 
 /* Support memory filling (junk/zero/quarantine/redzone). */
 #define JEMALLOC_FILL 
@@ -184,10 +184,10 @@
  * later reuse.  This is disabled by default on Linux because common sequences
  * of mmap()/munmap() calls will cause virtual memory map holes.
  */
-/* #undef JEMALLOC_MUNMAP */
+#define JEMALLOC_MUNMAP 
 
 /* TLS is used to map arenas and magazine caches to threads. */
-#define JEMALLOC_TLS 
+/* #undef JEMALLOC_TLS */
 
 /*
  * ffs*() functions to use for bitmapping.  Don't use these directly; instead,
@@ -212,8 +212,8 @@
 /*
  * Darwin (OS X) uses zones to work around Mach-O symbol override shortcomings.
  */
-/* #undef JEMALLOC_ZONE */
-/* #undef JEMALLOC_ZONE_VERSION */
+#define JEMALLOC_ZONE 
+#define JEMALLOC_ZONE_VERSION 8
 
 /*
  * Methods for determining whether the OS overcommits.
@@ -222,7 +222,7 @@
  * JEMALLOC_SYSCTL_VM_OVERCOMMIT: FreeBSD's vm.overcommit sysctl.
  */
 /* #undef JEMALLOC_SYSCTL_VM_OVERCOMMIT */
-#define JEMALLOC_PROC_SYS_VM_OVERCOMMIT_MEMORY 
+/* #undef JEMALLOC_PROC_SYS_VM_OVERCOMMIT_MEMORY */
 
 /*
  * Methods for purging unused pages differ between operating systems.
@@ -234,11 +234,11 @@
  *                             unused, such that they will be discarded rather
  *                             than swapped out.
  */
-#define JEMALLOC_PURGE_MADVISE_DONTNEED 
-/* #undef JEMALLOC_PURGE_MADVISE_FREE */
+/* #undef JEMALLOC_PURGE_MADVISE_DONTNEED */
+#define JEMALLOC_PURGE_MADVISE_FREE 
 
 /* Define if operating system has alloca.h header. */
-#define JEMALLOC_HAS_ALLOCA_H 1
+/* #undef JEMALLOC_HAS_ALLOCA_H */
 
 /* C99 restrict keyword supported. */
 #define JEMALLOC_HAS_RESTRICT 1
@@ -259,13 +259,13 @@
 #define LG_SIZEOF_INTMAX_T 3
 
 /* glibc malloc hooks (__malloc_hook, __realloc_hook, __free_hook). */
-#define JEMALLOC_GLIBC_MALLOC_HOOK 
+/* #undef JEMALLOC_GLIBC_MALLOC_HOOK */
 
 /* glibc memalign hook. */
-#define JEMALLOC_GLIBC_MEMALIGN_HOOK 
+/* #undef JEMALLOC_GLIBC_MEMALIGN_HOOK */
 
 /* Adaptive mutex support in pthreads. */
-#define JEMALLOC_HAVE_PTHREAD_MUTEX_ADAPTIVE_NP 
+/* #undef JEMALLOC_HAVE_PTHREAD_MUTEX_ADAPTIVE_NP */
 
 /*
  * If defined, jemalloc symbols are not exported (doesn't work when

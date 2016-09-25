@@ -29,7 +29,6 @@
 #  define mallctlbymib je_mallctlbymib
 #  define malloc_stats_print je_malloc_stats_print
 #  define malloc_usable_size je_malloc_usable_size
-#  define memalign je_memalign
 #  define valloc je_valloc
 #endif
 
@@ -61,6 +60,5 @@
 #  undef je_mallctlbymib
 #  undef je_malloc_stats_print
 #  undef je_malloc_usable_size
-#  undef je_memalign
 #  undef je_valloc
 #endif

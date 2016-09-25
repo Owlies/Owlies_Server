@@ -18,5 +18,4 @@
 #undef je_mallctlbymib
 #undef je_malloc_stats_print
 #undef je_malloc_usable_size
-#undef je_memalign
 #undef je_valloc

@@ -18,5 +18,4 @@
 #define	je_mallctlbymib JEMALLOC_N(mallctlbymib)
 #define	je_malloc_stats_print JEMALLOC_N(malloc_stats_print)
 #define	je_malloc_usable_size JEMALLOC_N(malloc_usable_size)
-#define	je_memalign JEMALLOC_N(memalign)
 #define	je_valloc JEMALLOC_N(valloc)
