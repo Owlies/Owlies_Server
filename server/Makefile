@@ -26,7 +26,7 @@ skynet : 3rd/skynet/Makefile
 	cp -rpf $(SKYNET_PATH)/skynet skynet
 
 $(BUILD_PATH)/protobufDataTemplateLoader.o : $(OWLIES_SRC)/Protobuf/protobufLoaders/protobufDataTemplateLoader.c | $(BUILD_PATH)
-	$(CC) $(CFLAGS) $(PROTOBUF_C_COMPILE_FLAG) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
+	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
 	
 $(BUILD_PATH)/ProtoBufDataTemplate.pb-c.o : $(OWLIES_SRC)/Protobuf/protobufs/ProtoBufDataTemplate.pb-c.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(PROTOBUF_C_COMPILE_FLAG) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
