@@ -2,10 +2,21 @@
 #include <stdlib.h>
 #include "protobufDataTemplateLoader.h"
 
-void serializeMessage (struct _Owlies__Core__ChangeEvents__Item *message, void **buf, unsigned *len) {
+void serializeMessageWithSize(struct _Owlies__Core__ChangeEvents__Item *message, void **buf, unsigned len) {
+    (*buf) = malloc(len);
+    owlies__core__change_events__item__pack(message, *buf);
+}
+
+void serializeMessage (struct _Owlies__Core__ChangeEvents__Item *message, void **buf) {
+    unsigned len = owlies__core__change_events__item__get_packed_size(message);
+    (*buf) = malloc(len);
+    owlies__core__change_events__item__pack(message, *buf);
+}
+
+void serializeMessageWithLenOutput (struct _Owlies__Core__ChangeEvents__Item *message, void **buf, unsigned *len) {
     (*len) = owlies__core__change_events__item__get_packed_size(message);
     (*buf) = malloc((*len));
-    owlies__core__change_events__item__pack_to_buffer(message, *buf);
+    owlies__core__change_events__item__pack(message, *buf);
 }
 
 struct _Owlies__Core__ChangeEvents__Item deserializeMessage(void *buf, unsigned len) {

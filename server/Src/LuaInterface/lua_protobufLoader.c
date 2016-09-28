@@ -2,34 +2,39 @@
 
 #include <lua.h>
 #include <lauxlib.h>
-#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include "Protobuf/protobufLoaders/protobufDataTemplateLoader.h"
 
 static int unpack (lua_State *L) {
 	printf("unpack function called\n");
-	printf("%d\n", lua_gettop(L));
-	//struct _Owlies__Core__ChangeEvents__Item deserializeMessage(void *buf, unsigned len)
 	void *buf = lua_touserdata(L, 1);
 	int sz = lua_tointeger(L,2);
-	printf("%d\n", sz);
-
 	struct _Owlies__Core__ChangeEvents__Item item = deserializeMessage(buf, sz);
-	// lua_getglobal(L, "deserializeMessage");
-	// lua_pushlightuserdata(L ,buf);
-	// lua_pushinteger(L, sz);
-	// lua_call(L, 2, 1);
-	// lua_setglobal(L, "item");
-	// struct _Owlies__Core__ChangeEvents__Item *item = lua_touserdata(L, 1);
-	// lua_pop(L, 1);
 	printf("item name: %s\n", item.name);
+	// TODO: owlies__core__change_events__item__free_unpacked(&item, NULL);
+	lua_settop(L, 0);
 	return 0;
 }
 
 static int pack (lua_State *L) {
 	printf("pack function called\n");
-	return 0;
+	size_t *name_len = 0;
+	const char *name = lua_tolstring(L,1,name_len);
+	struct _Owlies__Core__ChangeEvents__Item message = OWLIES__CORE__CHANGE_EVENTS__ITEM__INIT;
+	void *buf;
+	// unsigned size;
+
+	message.name = name;
+	message.price = 123;
+	message.itemtype = OWLIES__CORE__CHANGE_EVENTS__ITEM_TYPE__Shirt;
+
+	serializeMessage(&message, &buf);
+	// lua_pushinteger(L, len);
+	lua_pushlightuserdata(L, buf);
+	printf("pack function end\n");
+
+	return 1;
 }
 
 int luaopen_protobufLoader(lua_State *L) {
