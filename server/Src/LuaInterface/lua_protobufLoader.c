@@ -25,13 +25,14 @@ static int pack (lua_State *L) {
 	void *buf;
 	// unsigned size;
 
-	message.name = name;
+	message.name = (char *)name;
 	message.price = 123;
 	message.itemtype = OWLIES__CORE__CHANGE_EVENTS__ITEM_TYPE__Shirt;
 
 	serializeMessage(&message, &buf);
 	// lua_pushinteger(L, len);
-	lua_pushlightuserdata(L, buf);
+	// lua_pushlightuserdata(L, buf);
+	lua_pushstring(L, buf);
 	printf("pack function end\n");
 
 	return 1;
