@@ -29,7 +29,7 @@ $(BUILD_PATH)/protobufDataTemplateLoader.o : $(OWLIES_SRC)/Protobuf/protobufLoad
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
 	
 $(BUILD_PATH)/ProtoBufDataTemplate.pb-c.o : $(OWLIES_SRC)/Protobuf/protobufs/ProtoBufDataTemplate.pb-c.c | $(BUILD_PATH)
-	$(CC) $(CFLAGS) $(PROTOBUF_C_COMPILE_FLAG) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
+	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -c -o $@ $^
 	
 $(BUILD_PATH)/physic.so : $(LUA_INTERFACE_PATH)/lua_physic.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^
@@ -40,5 +40,6 @@ $(BUILD_PATH)/protobufLoader.so : $(BUILD_PATH)/protobufDataTemplateLoader.o $(B
 clean:
 	cd $(SKYNET_PATH) && make clean
 	rm -f $(BUILD_PATH)/*.so
+	rm -f $(BUILD_PATH)/*.o
 	rm -f skynet
 
