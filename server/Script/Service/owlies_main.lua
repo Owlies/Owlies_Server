@@ -7,7 +7,6 @@ local protobufLoader = require "protobufLoader"
 skynet.start(function()
 	print("game start")
 	physic.testprint("a")
-	local pack = protobufLoader.pack("huayu test")
 	local watchdog = skynet.newservice("owlies_watchdog")
 	skynet.call(watchdog, "lua", "start", {
 		port = 8888,

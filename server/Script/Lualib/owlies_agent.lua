@@ -39,7 +39,7 @@ local function request(name, args, response)
 end
 
 local function send_package(pack)
-	-- local package = string.pack(">s2", pack)
+	local package = string.pack(">s2", pack)
 	socket.write(client_fd, pack)
 end
 
