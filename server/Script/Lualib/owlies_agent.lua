@@ -38,18 +38,15 @@ local function request(name, args, response)
 	end
 end
 
-local function send_package(pack)
-	local package = string.pack(">s2", pack)
-	socket.write(client_fd, pack)
+local function send_package(pack, sz)
+	--local package = string.pack(">s2", pack)
+	socket.write(client_fd, pack, sz)
 end
 
 skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		print(msg); -- skynet_message
-		print(sz);
-		-- return host:dispatch(msg, sz);
 		return protobufLoader.unpack(msg, sz);
 	end,
 	dispatch = function (_, _, type, ...)
@@ -78,10 +75,8 @@ function CMD.start(conf)
 	-- send_request = host:attach(protobufLoader.load(2))
 	skynet.fork(function()
 		while true do
-		    local pack = protobufLoader.pack("huayu test")
-			print("send package")
-			print(pack)
-			send_package(pack)
+		    local sz, pack = protobufLoader.pack("huayu")
+			send_package(pack, sz)
 			skynet.sleep(500)
 		end
 	end)
