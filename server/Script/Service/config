@@ -1,4 +1,5 @@
 root = "./3rd/skynet/"
+owliesRoot = "./Script/"
 thread = 8
 logger = nil
 logpath = "."
@@ -8,7 +9,7 @@ master = "127.0.0.1:2013"
 start = "owlies_main"	-- main script
 bootstrap = "snlua bootstrap"	-- The service for bootstrap
 standalone = "0.0.0.0:2013"
-lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"
+lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..owliesRoot.."Lualib/?.lua"
 lua_cpath = root.."luaclib/?.so;".."Lib/?.so;"
 luaservice = root.."service/?.lua;".."Script/Service/?.lua;".."Script/Lualib/?.lua;"
 lualoader =  root.."lualib/loader.lua"

@@ -2,6 +2,7 @@ local skynet = require "skynet"
 local netpack = require "netpack"
 local socket = require "socket"
 local protobufLoader = require "protobufLoader"
+local connectionManager = require('owlies_connectionManager')
 
 local WATCHDOG
 local host
@@ -47,6 +48,7 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
+	    connectionManager.receive(msg, sz);
 		return protobufLoader.unpack(msg, sz);
 	end,
 	dispatch = function (_, _, type, ...)
@@ -75,9 +77,10 @@ function CMD.start(conf)
 	-- send_request = host:attach(protobufLoader.load(2))
 	skynet.fork(function()
 		while true do
-		    local sz, pack = protobufLoader.pack("huayu")
-			send_package(pack, sz)
-			skynet.sleep(500)
+		    local sz, pack = protobufLoader.pack("huayu");
+			connectionManager.send(pack, sz);
+			send_package(pack, sz);
+			skynet.sleep(500);
 		end
 	end)
 
