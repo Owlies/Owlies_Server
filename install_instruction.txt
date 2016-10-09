@@ -21,7 +21,6 @@ $ make check
 $ sudo make install
 $ sudo ldconfig # refresh shared library cache.
 
-
 2.protobuf - c
 https://github.com/protobuf-c/protobuf-c
 Master branch
@@ -35,3 +34,23 @@ make macosx
 Go back to Owlies_Server/server/
 make clean
 make macosx
+
+Linux instruction:
+1. Follow first two steps above
+
+2. Add environment path
+	vim /etc/profile
+add lines bellow to the end of file
+	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+	export PKG_CONFIG_PATH
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+3. find the file '.bashrc' under the folder of your username(HOME if your are root user)
+add the line bellow to the end of file
+	source /etc/profile
+
+
+4 Go to Owlies_Server/server/
+	source /etc/profile
+	make clean
+	make all
