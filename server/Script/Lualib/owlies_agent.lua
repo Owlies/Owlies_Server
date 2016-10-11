@@ -1,8 +1,8 @@
 local skynet = require "skynet"
 local netpack = require "netpack"
 local socket = require "socket"
-local protobufLoader = require "protobufLoader"
-local connectionManager = require('owlies_connectionManager')
+local dataTemplateProtobuf = require "dataTemplateProtobuf"
+local connectionManager = require "owlies_connectionManager"
 
 local WATCHDOG
 local host
@@ -49,7 +49,7 @@ skynet.register_protocol {
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
 	    connectionManager.receive(msg, sz);
-		return protobufLoader.unpack(msg, sz);
+		return dataTemplateProtobuf.unpack(msg, sz);
 	end,
 	dispatch = function (_, _, type, ...)
 		-- if type == "REQUEST" then
@@ -73,11 +73,9 @@ function CMD.start(conf)
 	local gate = conf.gate
 	WATCHDOG = conf.watchdog
 	-- slot 1,2 set at main.lua
-	-- host = protobufLoader.load(1):host "package"
-	-- send_request = host:attach(protobufLoader.load(2))
 	skynet.fork(function()
 		while true do
-		    local sz, pack = protobufLoader.pack("huayu");
+		    local sz, pack = dataTemplateProtobuf.pack("huayu");
 			connectionManager.send(pack, sz);
 			send_package(pack, sz);
 			skynet.sleep(500);

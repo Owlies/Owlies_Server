@@ -1,7 +1,7 @@
 local skynet = require "skynet"
 local netpack = require "netpack"
 local socket = require "socket"
-local protobufLoader = require "protobufLoader"
+local dataTemplateProtobuf = require "dataTemplateProtobuf"
 
 local ConnectionManager = {};
 function ConnectionManager.receive(msg, sz)

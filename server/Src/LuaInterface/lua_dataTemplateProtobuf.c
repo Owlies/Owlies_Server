@@ -7,6 +7,18 @@
 #include <assert.h>
 #include "Protobuf/protobufLoaders/protobufDataTemplateLoader.h"
 
+static int create (lua_State *L) {
+    struct _Owlies__Core__ChangeEvents__Item message = OWLIES__CORE__CHANGE_EVENTS__ITEM__INIT;
+    lua_pushlightuserdata(L, &message);
+    return 1;
+}
+
+static int destroy (lua_State *L) {
+    struct _Owlies__Core__ChangeEvents__Item *item = lua_touserdata(L, 1);
+    owlies__core__change_events__item__free_unpacked(item, NULL);
+    return 0;
+}
+
 static int unpack (lua_State *L) {
 	void *buf = lua_touserdata(L, 1);
 	int sz = lua_tointeger(L,2);
@@ -42,10 +54,12 @@ static int pack (lua_State *L) {
 	return 2;
 }
 
-int luaopen_protobufLoader(lua_State *L) {
+int luaopen_dataTemplateProtobuf(lua_State *L) {
 	luaL_checkversion(L);
 
 	luaL_Reg l[] = {
+        { "create", create },
+        { "destroy", destroy },
 		{ "unpack" , unpack },
 		{ "pack" , pack },
 		{ NULL, NULL },
