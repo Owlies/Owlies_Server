@@ -1,10 +1,9 @@
-include ./3rd/skynet/platform.mk
+include platform.mk
 
 OWLIES_LIBS ?= -lpthread -lm
 SHARED ?= -fPIC --shared
 
 SKYNET_PATH ?= 3rd/skynet
-PROTOBUF_PATH ?= 3rd/protobuf-c
 OWLIES_SRC ?= Src
 LUA_INTERFACE_PATH ?= $(OWLIES_SRC)/LuaInterface
 LUA_INC ?= $(SKYNET_PATH)/3rd/lua
@@ -12,7 +11,7 @@ LUALIB_INC ?= $(SKYNET_PATH)/lualib-src
 SKYNET_INC ?= $(SKYNET_PATH)/skynet-src
 BUILD_PATH ?= Lib
 
-CFLAGS = -g -O2 -Wall -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC) -I$(PROTOBUF_PATH) -I$(OWLIES_SRC) 
+CFLAGS = -g -O2 -Wall -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC) -I$(OWLIES_SRC) 
 PROTOBUF_C_COMPILE_FLAG = `pkg-config --cflags 'libprotobuf-c >= 1.0.0'`
 PROTOBUF_C_LINK_FLAG = -lprotobuf-c `pkg-config --libs 'libprotobuf-c >= 1.0.0'`
 
@@ -21,8 +20,8 @@ $(BUILD_PATH) :
 
 all: skynet $(BUILD_PATH)/physic.so $(BUILD_PATH)/protobufLoader.so
 
-skynet : 3rd/skynet/Makefile
-	cd $(SKYNET_PATH) && make linux
+skynet :
+	cd $(SKYNET_PATH) && make $(PLAT)
 	cp -rpf $(SKYNET_PATH)/skynet skynet
 
 $(BUILD_PATH)/protobufDataTemplateLoader.o : $(OWLIES_SRC)/Protobuf/protobufLoaders/protobufDataTemplateLoader.c | $(BUILD_PATH)
