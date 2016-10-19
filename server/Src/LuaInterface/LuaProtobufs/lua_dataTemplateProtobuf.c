@@ -1,25 +1,32 @@
 #include "lua-seri.h"
+#include "lua_dataTemplateProtobuf.h"
 
-#include <lua.h>
-#include <lauxlib.h>
-#include <string.h>
-#include <stdlib.h>
-#include <assert.h>
-#include "Protobuf/protobufLoaders/protobufDataTemplateLoader.h"
+struct _Owlies__Core__ChangeEvents__Item protobufObject;
 
-static int create (lua_State *L) {
-    struct _Owlies__Core__ChangeEvents__Item message = OWLIES__CORE__CHANGE_EVENTS__ITEM__INIT;
-    lua_pushlightuserdata(L, &message);
-    return 1;
+int create (lua_State *L) {
+	struct _Owlies__Core__ChangeEvents__Item message = OWLIES__CORE__CHANGE_EVENTS__ITEM__INIT;
+    protobufObject = message;
+	return 0;
 }
 
-static int destroy (lua_State *L) {
-    struct _Owlies__Core__ChangeEvents__Item *item = lua_touserdata(L, 1);
-    owlies__core__change_events__item__free_unpacked(item, NULL);
-    return 0;
+int destroy (lua_State *L) {
+    owlies__core__change_events__item__free_unpacked(&protobufObject, NULL);
+	return 0;
 }
 
-static int unpack (lua_State *L) {
+int helper (lua_State *L) {
+	char *buf = lua_touserdata(L, 1);
+	printf("%d", buf[0]);
+	printf("%d", buf[1]);
+	printf("%d", buf[2]);
+	printf("%d", buf[3]);
+	printf("%d", buf[4]);
+	printf("%d", buf[5]);
+	lua_settop(L, 0);
+	return 0;
+}
+
+int unpack (lua_State *L) {
 	void *buf = lua_touserdata(L, 1);
 	int sz = lua_tointeger(L,2);
 	struct _Owlies__Core__ChangeEvents__Item item = deserializeMessage(buf, sz);
@@ -28,7 +35,7 @@ static int unpack (lua_State *L) {
 	return 0;
 }
 
-static int pack (lua_State *L) {
+int pack (lua_State *L) {
 	printf("pack function called\n");
 	size_t *name_len = 0;
 	const char *name = lua_tolstring(L,1,name_len);
@@ -60,6 +67,7 @@ int luaopen_dataTemplateProtobuf(lua_State *L) {
 	luaL_Reg l[] = {
         { "create", create },
         { "destroy", destroy },
+		{ "helper", helper },
 		{ "unpack" , unpack },
 		{ "pack" , pack },
 		{ NULL, NULL },

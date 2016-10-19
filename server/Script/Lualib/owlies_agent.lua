@@ -2,7 +2,7 @@ local skynet = require "skynet"
 local netpack = require "netpack"
 local socket = require "socket"
 local dataTemplateProtobuf = require "dataTemplateProtobuf"
-local connectionManager = require "owlies_connectionManager"
+local connectionManager = require "connectionManager"
 
 local WATCHDOG
 local host
@@ -48,8 +48,9 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-	    connectionManager.receive(msg, sz);
-		return dataTemplateProtobuf.unpack(msg, sz);
+		return connectionManager.onReceiveProtobuf(msg, sz);
+	    -- return connectionManager.receive(msg, sz);
+		-- return dataTemplateProtobuf.unpack(msg, sz);
 	end,
 	dispatch = function (_, _, type, ...)
 		-- if type == "REQUEST" then
@@ -76,7 +77,7 @@ function CMD.start(conf)
 	skynet.fork(function()
 		while true do
 		    local sz, pack = dataTemplateProtobuf.pack("huayu");
-			connectionManager.send(pack, sz);
+			-- local sz2, pack2 = connectionManager.send("huayu");
 			send_package(pack, sz);
 			skynet.sleep(500);
 		end
