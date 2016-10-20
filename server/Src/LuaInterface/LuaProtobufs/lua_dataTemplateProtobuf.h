@@ -5,8 +5,5 @@
 #include <assert.h>
 #include "Protobuf/protobufLoaders/protobufDataTemplateLoader.h"
 
-int create (lua_State *L);
-int destroy (lua_State *L);
-int helper (lua_State *L);
-int unpack (lua_State *L);
-int pack (lua_State *L);
+struct _Owlies__Core__ChangeEvents__Item* deserializeProtobuf(void *buf, unsigned sz);
+void* serializeProtobuf(struct _Owlies__Core__ChangeEvents__Item message, unsigned* sz);

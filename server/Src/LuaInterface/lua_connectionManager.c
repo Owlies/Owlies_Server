@@ -35,8 +35,7 @@ void* getProtobufFromTypeString(const char *typeString, char* buf, int sz) {
     printf("getProtobufFromTypeString called\n");
 
     // TODO(Huayu): create protobuf object based on typeString
-    struct _Owlies__Core__ChangeEvents__Item *item = malloc(sizeof(struct _Owlies__Core__ChangeEvents__Item));
-    *item = deserializeMessage(buf, sz);
+    struct _Owlies__Core__ChangeEvents__Item *item = deserializeProtobuf(buf, sz);
     printf("Item name: %s\n", item->name);
     return item;
 }
