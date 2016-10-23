@@ -40,6 +40,11 @@ Go back to Owlies_Server/server/
 make clean
 make macosx
 
+* if see error: 
+   Src/Protobuf/protobufs/ProtoBufDataTemplate.pb-c.h:7:10: fatal error: 
+      'protobuf-c/protobuf-c.h' file not found
+* update Xcode : https://github.com/citusdata/cstore_fdw/issues/40
+
 Linux instruction:
 1. Follow first two steps above
 
