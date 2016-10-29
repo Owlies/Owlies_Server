@@ -48,6 +48,8 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
+		print(msg);
+		print(sz);
 		return connectionManager.onReceiveProtobuf(msg, sz);
 	    -- return connectionManager.receive(msg, sz);
 		-- return dataTemplateProtobuf.unpack(msg, sz);
@@ -77,7 +79,7 @@ function CMD.start(conf)
 	skynet.fork(function()
 		while true do
 		    local sz, pack = dataTemplateProtobuf.pack("huayu");
-			-- local sz2, pack2 = connectionManager.send("huayu");
+			-- local sz, pack = connectionManager.send("huayu");
 			send_package(pack, sz);
 			skynet.sleep(500);
 		end
