@@ -1,4 +1,4 @@
-Installation Guide on Mac Environment
+#Installation Guide on Mac Environment
 
 ### protobuf - 2.7.0
 https://github.com/google/protobuf/tree/2.7.0
@@ -32,6 +32,7 @@ create .bash_profile under root folder, add:
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 save
 ```
+<hr>
 
 ### Build protobuf - c from Source
 https://github.com/protobuf-c/protobuf-c
@@ -41,6 +42,8 @@ Run following command:
 ``` bash
 ./autogen.sh && ./configure && make && make install
 ```
+
+<hr>
 
 ### Install Server
 Go to Owlies_Server/server/3rd/skynet

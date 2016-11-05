@@ -1,4 +1,4 @@
-Installation Guide on Redhat Environment
+#Installation Guide on Redhat Environment
 
 ### protobuf - 2.7.0
 https://github.com/google/protobuf/tree/2.7.0
@@ -33,6 +33,8 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 save
 ```
 
+<hr>
+
 ### Build protobuf - c from Source
 https://github.com/protobuf-c/protobuf-c
 Master branch
@@ -41,6 +43,8 @@ Run following command:
 ``` bash
 ./autogen.sh && ./configure && make && make install
 ```
+
+<hr>
 
 ### Environment Configuration 
 Add environment path
@@ -59,6 +63,8 @@ find the file '.bashrc' under the folder of your username(HOME if your are root 
 ``` bash
 source /etc/profile
 ```
+
+<hr>
 
 ### Install Server
 Go to Owlies_Server/server/
