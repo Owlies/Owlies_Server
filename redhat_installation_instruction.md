@@ -27,12 +27,6 @@ $ sudo make install
 $ sudo ldconfig # refresh shared library cache.
 ```
 
-create .bash_profile under root folder, add:
-``` bash
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-save
-```
-
 <hr>
 
 ### Build protobuf - c from Source
