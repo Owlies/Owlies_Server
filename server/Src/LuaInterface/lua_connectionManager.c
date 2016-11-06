@@ -20,7 +20,8 @@ int onReceiveProtobuf (lua_State *L) {
     char typeString[TYPE_STRING_MAX_LEN];
     memset(typeString, 0, TYPE_STRING_MAX_LEN);
 
-    for (int i = 0; i < typeStringSize; ++i) {
+    int i = 0;
+    for (i = 0; i < typeStringSize; ++i) {
         typeString[i] = buf[i+2];
     }
     typeString[typeStringSize] = '\0';

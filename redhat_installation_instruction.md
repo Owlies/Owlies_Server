@@ -35,7 +35,10 @@ Master branch
 
 Run following command:
 ``` bash
-./autogen.sh && ./configure && make && make install
+./autogen.sh
+./configure
+make
+sudo make install
 ```
 
 <hr>
@@ -61,9 +64,14 @@ source /etc/profile
 <hr>
 
 ### Install Server
+Go to Owlies_Server/server/3rd/skynet
+``` bash
+make clean
+make 'linux'
+```
+
 Go to Owlies_Server/server/
 ``` bash
 source /etc/profile
-make clean
 make all
 ```
