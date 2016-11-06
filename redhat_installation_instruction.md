@@ -3,6 +3,10 @@
 ### protobuf - 2.7.0
 https://github.com/google/protobuf/tree/2.7.0
 Make sure download the 2.7.0 branch.
+``` bash
+git clone https://github.com/google/protobuf.git
+git checkout 2.7.0
+```
 
 Follow the instruction in src/README.md
 
