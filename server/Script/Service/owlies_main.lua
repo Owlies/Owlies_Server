@@ -1,7 +1,6 @@
 local skynet = require "skynet"
 require "skynet.manager"
 local physic = require "physic"
-local dataTemplateProtobuf = require "dataTemplateProtobuf"
 --local max_client = 64
 
 skynet.start(function()

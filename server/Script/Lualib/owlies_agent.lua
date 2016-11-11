@@ -3,6 +3,9 @@ local netpack = require "netpack"
 local socket = require "socket"
 local dataTemplateProtobuf = require "dataTemplateProtobuf"
 local connectionManager = require "connectionManager"
+local pb = require "pb"
+pb.loadfile "ProtoBufDataTemplate.pb"
+
 
 local WATCHDOG
 local host
@@ -48,7 +51,12 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		return connectionManager.onReceiveProtobuf(msg, sz);
+		-- local protobufUserData = connectionManager.onReceiveProtobuf(msg, sz);
+		local protobufUserData = connectionManager.splitOnReceive(msg, sz);
+		local decoded = pb.decode(protobufUserData, "Item");
+		print("decoded object:");
+		print(decoded);
+		return protobufUserData;
 	    -- return connectionManager.receive(msg, sz);
 		-- return dataTemplateProtobuf.unpack(msg, sz);
 	end,
