@@ -1,3 +1,4 @@
+
 #include "lua-seri.h"
 
 #include <lua.h>
@@ -8,8 +9,8 @@
 #include <assert.h>
 #include "LuaProtobufs/lua_dataTemplateProtobuf.h"
 #include "lua_connectionManager.h"
+#include "pbc.h"
 
-#include "../../3rd/pbc/pbc.h"
 
 #define TYPE_STRING_MAX_LEN 255
 
