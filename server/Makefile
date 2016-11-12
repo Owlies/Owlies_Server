@@ -1,7 +1,7 @@
 include platform.mk
 
 OWLIES_LIBS ?= -lpthread -lm
-SHARED ?= -fPIC --shared
+SHARED ?= --shared
 
 SKYNET_PATH ?= 3rd/skynet
 PBC_PATH ?= 3rd/pbc
@@ -15,7 +15,7 @@ SKYNET_INC ?= $(SKYNET_PATH)/skynet-src
 BUILD_PATH ?= Lib
 LUADIR = /usr/local/include
 
-CFLAGS = -g -O2 -Wall -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC) -I$(OWLIES_SRC)  -I$(PBC_PATH) -I$(PBC_PATH)/test
+CFLAGS = -g -O2 -fPIC -Wall -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC) -I$(OWLIES_SRC)
 PROTOBUF_C_COMPILE_FLAG = `pkg-config --cflags 'libprotobuf-c >= 1.0.0'`
 PROTOBUF_C_LINK_FLAG = -lprotobuf-c `pkg-config --libs 'libprotobuf-c >= 1.0.0'`
 
@@ -41,11 +41,11 @@ $(BUILD_PATH)/ProtoBufDataTemplate.pb-c.o : $(OWLIES_SRC)/Protobuf/protobufs/Pro
 $(BUILD_PATH)/physic.so : $(LUA_INTERFACE_PATH)/lua_physic.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^
 
-$(BUILD_PATH)/dataTemplateProtobuf.so : $(BUILD_PATH)/protobufDataTemplateLoader.o $(BUILD_PATH)/ProtoBufDataTemplate.pb-c.o $(LUA_PROTOBUF_INTERFACE_PATH)/lua_dataTemplateProtobuf.c | $(BUILD_PATH)
+$(BUILD_PATH)/dataTemplateProtobuf.so : $(LUA_PROTOBUF_INTERFACE_PATH)/lua_dataTemplateProtobuf.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^ $(PROTOBUF_C_LINK_FLAG)
 
-$(BUILD_PATH)/connectionManager.so : $(BUILD_PATH)/protobufDataTemplateLoader.o $(BUILD_PATH)/ProtoBufDataTemplate.pb-c.o $(LUA_PROTOBUF_INTERFACE_PATH)/lua_dataTemplateProtobuf.c $(LUA_INTERFACE_PATH)/lua_connectionManager.c | $(BUILD_PATH)
-	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^ $(PROTOBUF_C_LINK_FLAG) -lpbc
+$(BUILD_PATH)/connectionManager.so : $(LUA_INTERFACE_PATH)/lua_connectionManager.c | $(BUILD_PATH)
+	$(CC) $(CFLAGS) -I../../3rd/pbc -L../../Lib -o $@ $^ $(PROTOBUF_C_LINK_FLAG) -lpbc
 
 clean:
 	cd $(SKYNET_PATH) && make clean
