@@ -5,6 +5,7 @@
 luac
 skynet
 server/Lib
+server/3rd/pbc/build
 .DS_Store
 
 *.so
