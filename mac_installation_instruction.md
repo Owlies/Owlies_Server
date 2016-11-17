@@ -66,3 +66,10 @@ make macosx
       'protobuf-c/protobuf-c.h' file not found
 * update Xcode : https://github.com/citusdata/cstore_fdw/issues/40
 
+install luarocks:
+https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Mac-OS-X
+follow the manual install instructions
+
+then install lpeg:
+luarocks install lpeg
+

@@ -17,6 +17,7 @@
 void read_file (const char *filename , struct pbc_slice *slice) {
 	FILE *f = fopen(filename, "rb");
 	if (f == NULL) {
+        printf("file not found\n");
 		slice->buffer = NULL;
 		slice->len = 0;
 		return;
@@ -76,10 +77,16 @@ int splitOnReceive (lua_State *L) {
 
     struct pbc_env * env = pbc_new();
 	struct pbc_slice slice;
-	read_file("protobufDataTemplate.pb", &slice);
+	read_file("Src/Protobuf/protobufs/protobufDataTemplate.pb", &slice);
 	int ret = pbc_register(env, &slice);
 	assert(ret == 0);
 
+    slice.buffer = (buf + 2 + typeStringSize);
+    printf("slice len: %d\n", slice.len);
+
+    struct pbc_wmessage* w_msg = pbc_wmessage_new(env, "Item");
+    
+    pbc_wmessage_delete(w_msg);
 	pbc_delete(env);
 
 	return 1;

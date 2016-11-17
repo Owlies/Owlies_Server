@@ -3,9 +3,26 @@ local netpack = require "netpack"
 local socket = require "socket"
 local dataTemplateProtobuf = require "dataTemplateProtobuf"
 local connectionManager = require "connectionManager"
-local pb = require "pb"
-pb.loadfile "ProtoBufDataTemplate.pb"
 
+local sproto = require "sproto"
+local core = require "sproto.core"
+local print_r = require "print_r"
+
+local sp = sproto.parse [[
+.Person {
+	name 0 : string
+	id 1 : integer
+	email 2 : string
+	.PhoneNumber {
+		number 0 : string
+		type 1 : integer
+	}
+	phone 3 : *PhoneNumber
+}
+.AddressBook {
+	person 0 : *Person
+}
+]]
 
 local WATCHDOG
 local host
@@ -51,12 +68,19 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		-- local protobufUserData = connectionManager.onReceiveProtobuf(msg, sz);
-		local protobufUserData = connectionManager.splitOnReceive(msg, sz);
-		local decoded = pb.decode(protobufUserData, "Item");
-		print("decoded object:");
-		print(decoded);
-		return protobufUserData;
+		print("recive:");
+		print(sz);
+		local addr = sp:decode("Person", msg, sz)
+		print("recive decoded:");
+		print_r(addr);
+		return addr;
+		-- -- local protobufUserData = connectionManager.onReceiveProtobuf(msg, sz);
+		-- local protobufUserData = connectionManager.splitOnReceive(msg, sz);
+		-- decode = protobuf.decode("Item" , msg)
+		-- -- local decoded = pb.decode(protobufUserData, "Item");
+		-- print("decoded object:");
+		-- print(decoded);
+		-- return protobufUserData;
 	    -- return connectionManager.receive(msg, sz);
 		-- return dataTemplateProtobuf.unpack(msg, sz);
 	end,
