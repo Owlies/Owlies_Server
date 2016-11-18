@@ -5,7 +5,6 @@ local dataTemplateProtobuf = require "dataTemplateProtobuf"
 local connectionManager = require "connectionManager"
 
 local sproto = require "sproto"
-local core = require "sproto.core"
 local print_r = require "print_r"
 
 local sp = sproto.parse [[
@@ -64,6 +63,11 @@ local function send_package(pack, sz)
 	socket.write(client_fd, pack, sz)
 end
 
+local function send_package2(pack)
+	local package = string.pack(">s2", pack)
+	socket.write(client_fd, package)
+end
+
 skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
@@ -108,9 +112,15 @@ function CMD.start(conf)
 	-- slot 1,2 set at main.lua
 	skynet.fork(function()
 		while true do
-		    local sz, pack = dataTemplateProtobuf.pack("huayu");
+		    local person = sp;
+			person.name = "Alice";
+			person.id = 10000;
+			person.phone = {number = "123456789", type = 2};
+			local code = sp:encode("Person", person);
+		    -- local sz, pack = dataTemplateProtobuf.pack("huayu");
 			-- local sz2, pack2 = connectionManager.send("huayu");
-			send_package(pack, sz);
+			-- send_package(pack, sz);
+			send_package2(code);
 			skynet.sleep(500);
 		end
 	end)
