@@ -1,0 +1,9 @@
+Notes:
+
+sprotoloader:
+MAX_GLOBALSPROTO - 16
+will memory leak when replace sproto the old one
+
+
+TODO:
+Is it possible to avoid read sproto schemes from files, or reduce number of files

@@ -1,27 +1,13 @@
 local skynet = require "skynet"
 local netpack = require "netpack"
 local socket = require "socket"
-local dataTemplateProtobuf = require "dataTemplateProtobuf"
-local connectionManager = require "connectionManager"
 
 local sproto = require "sproto"
 local print_r = require "print_r"
 
-local sp = sproto.parse [[
-.Person {
-	name 0 : string
-	id 1 : integer
-	email 2 : string
-	.PhoneNumber {
-		number 0 : string
-		type 1 : integer
-	}
-	phone 3 : *PhoneNumber
-}
-.AddressBook {
-	person 0 : *Person
-}
-]]
+require "owlies_sproto_scheme"
+
+local sp = sprotoSchemes:getInstance().getScheme("Member");
 
 local WATCHDOG
 local host
@@ -59,13 +45,8 @@ local function request(name, args, response)
 end
 
 local function send_package(pack, sz)
-	--local package = string.pack(">s2", pack)
-	socket.write(client_fd, pack, sz)
-end
-
-local function send_package2(pack)
 	local package = string.pack(">s2", pack)
-	socket.write(client_fd, package)
+	socket.write(client_fd, pack, sz)
 end
 
 skynet.register_protocol {
@@ -78,15 +59,6 @@ skynet.register_protocol {
 		print("recive decoded:");
 		print_r(addr);
 		return addr;
-		-- -- local protobufUserData = connectionManager.onReceiveProtobuf(msg, sz);
-		-- local protobufUserData = connectionManager.splitOnReceive(msg, sz);
-		-- decode = protobuf.decode("Item" , msg)
-		-- -- local decoded = pb.decode(protobufUserData, "Item");
-		-- print("decoded object:");
-		-- print(decoded);
-		-- return protobufUserData;
-	    -- return connectionManager.receive(msg, sz);
-		-- return dataTemplateProtobuf.unpack(msg, sz);
 	end,
 	dispatch = function (_, _, type, ...)
 		-- if type == "REQUEST" then
@@ -117,10 +89,7 @@ function CMD.start(conf)
 			person.id = 10000;
 			person.phone = {number = "123456789", type = 2};
 			local code = sp:encode("Person", person);
-		    -- local sz, pack = dataTemplateProtobuf.pack("huayu");
-			-- local sz2, pack2 = connectionManager.send("huayu");
-			-- send_package(pack, sz);
-			send_package2(code);
+			send_package(code);
 			skynet.sleep(500);
 		end
 	end)

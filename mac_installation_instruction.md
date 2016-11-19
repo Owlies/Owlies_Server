@@ -69,6 +69,7 @@ make macosx
 install luarocks:
 https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Mac-OS-X
 follow the manual install instructions
+"configure", "make", "make install"
 
 then install lpeg:
 luarocks install lpeg
