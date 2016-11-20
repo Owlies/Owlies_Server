@@ -1,12 +1,6 @@
-#Installation Guide on Mac Environment
-
-### protobuf - 2.7.0
+1.protobuf - 2.7.0
 https://github.com/google/protobuf/tree/2.7.0
 Make sure download the 2.7.0 branch.
-``` bash
-git clone https://github.com/google/protobuf.git
-git checkout 2.7.0
-```
 
 Follow the instruction in src/README.md
 
@@ -21,56 +15,59 @@ To build protobuf from source, the following tools are needed:
   * unzip
   * pkg/config
 
-Type following commands:
-``` bash
 $ ./autogen.sh
 $ ./configure
 $ make
 $ make check
 $ sudo make install
 $ sudo ldconfig # refresh shared library cache.
-```
 
 create .bash_profile under root folder, add:
-``` bash
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-```
-<hr>
+save
 
-### Build protobuf - c from Source
+2.protobuf - c
 https://github.com/protobuf-c/protobuf-c
 Master branch
 
-Run following command:
-``` bash
 ./autogen.sh && ./configure && make && make install
-```
 
-<hr>
-
-### Install Server
-Go to Owlies_Server/server/3rd/skynet
-``` bash
+3.Go to Owlies_Server/server/3rd/skynet
 make clean
 make macosx
-```
 
 Go back to Owlies_Server/server/
-``` bash
 make clean
 make macosx
-```
 
 * if see error: 
    Src/Protobuf/protobufs/ProtoBufDataTemplate.pb-c.h:7:10: fatal error: 
       'protobuf-c/protobuf-c.h' file not found
 * update Xcode : https://github.com/citusdata/cstore_fdw/issues/40
 
-install luarocks:
-https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Mac-OS-X
-follow the manual install instructions
-"configure", "make", "make install"
+Linux instruction:
+1. Follow first two steps above
 
-then install lpeg:
-luarocks install lpeg
+2. Add environment path
+	vim /etc/profile
+add lines bellow to the end of file
+	PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+	export PKG_CONFIG_PATH
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
+3. find the file '.bashrc' under the folder of your username(HOME if your are root user)
+add the line bellow to the end of file
+	source /etc/profile
+
+
+4 Go to Owlies_Server/server/
+	source /etc/profile
+	make clean
+	make all
+
+Generate .pb:
+protoc --descriptor_set_out aaa.pb aaa.proto
+
+Make dll:
+gcc -c pb.c
+gcc -ggdb -O0 -undefined dynamic_lookup -shared -o pb.dll pb.o

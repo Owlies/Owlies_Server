@@ -1,8 +1,13 @@
 local skynet = require "skynet"
 local netpack = require "netpack"
 local socket = require "socket"
-local dataTemplateProtobuf = require "dataTemplateProtobuf"
-local connectionManager = require "connectionManager"
+
+local sproto = require "sproto"
+local print_r = require "print_r"
+
+require "owlies_sproto_scheme"
+
+local sp = sprotoSchemes:getInstance().getScheme("Member");
 
 local WATCHDOG
 local host
@@ -39,18 +44,21 @@ local function request(name, args, response)
 	end
 end
 
-local function send_package(pack, sz)
-	--local package = string.pack(">s2", pack)
-	socket.write(client_fd, pack, sz)
+local function send_package(pack)
+	local package = string.pack(">s2", pack)
+	socket.write(client_fd, package)
 end
 
 skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		return connectionManager.onReceiveProtobuf(msg, sz);
-	    -- return connectionManager.receive(msg, sz);
-		-- return dataTemplateProtobuf.unpack(msg, sz);
+		print("recive:");
+		print(sz);
+		local addr = sp:decode("Person", msg, sz)
+		print("recive decoded:");
+		print_r(addr);
+		return addr;
 	end,
 	dispatch = function (_, _, type, ...)
 		-- if type == "REQUEST" then
@@ -76,9 +84,12 @@ function CMD.start(conf)
 	-- slot 1,2 set at main.lua
 	skynet.fork(function()
 		while true do
-		    local sz, pack = dataTemplateProtobuf.pack("huayu");
-			-- local sz2, pack2 = connectionManager.send("huayu");
-			send_package(pack, sz);
+		    local person = sp;
+			person.name = "Huayu";
+			person.id = 5000;
+			person.phone = {number = "222222", type = 3};
+			local code = sp:encode("Person", person);
+			send_package(code);
 			skynet.sleep(500);
 		end
 	end)
