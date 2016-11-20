@@ -44,9 +44,9 @@ local function request(name, args, response)
 	end
 end
 
-local function send_package(pack, sz)
+local function send_package(pack)
 	local package = string.pack(">s2", pack)
-	socket.write(client_fd, pack, sz)
+	socket.write(client_fd, package)
 end
 
 skynet.register_protocol {
@@ -85,9 +85,9 @@ function CMD.start(conf)
 	skynet.fork(function()
 		while true do
 		    local person = sp;
-			person.name = "Alice";
-			person.id = 10000;
-			person.phone = {number = "123456789", type = 2};
+			person.name = "Huayu";
+			person.id = 5000;
+			person.phone = {number = "222222", type = 3};
 			local code = sp:encode("Person", person);
 			send_package(code);
 			skynet.sleep(500);
