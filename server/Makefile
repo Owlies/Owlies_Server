@@ -19,8 +19,7 @@ PROTOBUF_C_LINK_FLAG = -lprotobuf-c `pkg-config --libs 'libprotobuf-c >= 1.0.0'`
 $(BUILD_PATH) :
 	mkdir $(BUILD_PATH)
 
-all: skynet $(BUILD_PATH)/physic.so
-# all: skynet $(BUILD_PATH)/physic.so $(BUILD_PATH)/connectionManager.so
+all: skynet $(BUILD_PATH)/physic.so $(BUILD_PATH)/connectionManager.so
 
 skynet :
 	cd $(SKYNET_PATH) && make $(PLAT)
@@ -29,8 +28,8 @@ skynet :
 $(BUILD_PATH)/physic.so : $(LUA_INTERFACE_PATH)/lua_physic.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^
 
-# $(BUILD_PATH)/connectionManager.so : $(BUILD_PATH)/dataTemplateProtobuf.so $(LUA_INTERFACE_PATH)/lua_connectionManager.c| $(BUILD_PATH)
-# 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) $(PROTOBUF_C_LINK_FLAG) -L$(PBC_PATH)/build/ -lpbc -o $@ $^
+$(BUILD_PATH)/connectionManager.so : $(LUA_INTERFACE_PATH)/lua_connectionManager.c| $(BUILD_PATH)
+	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^
 
 clean:
 	cd $(SKYNET_PATH) && make clean

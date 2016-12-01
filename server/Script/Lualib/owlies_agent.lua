@@ -6,8 +6,10 @@ local sproto = require "sproto"
 local print_r = require "print_r"
 
 require "owlies_sproto_scheme"
+require "owlies_connection_manager"
 
-local sp = sprotoSchemes:getInstance().getScheme("Member");
+local sp = sprotoSchemes:Instance().getScheme("Member");
+local connectionManager = connectionManager:Instance();
 
 local WATCHDOG
 local host
@@ -53,12 +55,9 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		print("recive:");
-		print(sz);
-		local addr = sp:decode("Person", msg, sz)
-		print("recive decoded:");
-		print_r(addr);
-		return addr;
+		local obj = connectionManager.Instance().deserialize(msg, sz);
+		print_r(obj);
+		return obj;
 	end,
 	dispatch = function (_, _, type, ...)
 		-- if type == "REQUEST" then
