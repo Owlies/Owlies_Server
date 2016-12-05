@@ -39,7 +39,7 @@ function deserialize(message, size)
     local sz = size - 9 - messageNameLen;
     -- TODO(Huayu): verify session
     serverSession = session;
-    return sp:decode("Person", msg, sz);
+    return sp:decode(messageName, msg, sz);
 end
 
 function serialize(messageName, sprotoObj)
