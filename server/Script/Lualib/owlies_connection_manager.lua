@@ -4,8 +4,8 @@ local cmCore = require "connectionManager"
 
 require "owlies_sproto_scheme"
 
-
 local sp = sprotoSchemes:Instance().getScheme("Member");
+local serverSession = 0;
 
 -- Singleton Model --
 connectionManager = {};
@@ -37,11 +37,16 @@ function deserialize(message, size)
     print("deserialize");
     local messageType, session, messageName, messageNameLen, msg = cmCore.unpackMessage(message);
     local sz = size - 9 - messageNameLen;
+    -- TODO(Huayu): verify session
+    serverSession = session;
     return sp:decode("Person", msg, sz);
 end
 
-function serialize(sprotoObj, typeString)
-    assert(type(sprotoObj) == "userdata");
-    assert(type(typeString) == "string");
-
+function serialize(messageName, sprotoObj)
+    assert(type(messageName) == "string");
+    assert(type(sprotoObj) == "table");
+    local code = sp:encode(messageName, sprotoObj);
+    local package = cmCore.packMessage(messageName, serverSession, code);
+    serverSession = serverSession + 1;
+    return package;
 end

@@ -47,8 +47,8 @@ local function request(name, args, response)
 end
 
 local function send_package(pack)
-	local package = string.pack(">s2", pack)
-	socket.write(client_fd, package)
+	-- local package = string.pack(">s2", pack)
+	socket.write(client_fd, pack)
 end
 
 skynet.register_protocol {
@@ -87,8 +87,8 @@ function CMD.start(conf)
 			person.name = "Huayu";
 			person.id = 5000;
 			person.phone = {number = "222222", type = 3};
-			local code = sp:encode("Person", person);
-			send_package(code);
+			local package = connectionManager.Instance().serialize("Person", person);
+			send_package(package);
 			skynet.sleep(500);
 		end
 	end)

@@ -29,8 +29,32 @@ static int unpackMessage(lua_State *L) {
     return 5;
 }
 
+// For client, don't need to send down package size
 static int packMessage(lua_State *L) {
-    return 0;
+    const char *messageName = lua_tostring(L, 1);
+    int session = lua_tointeger(L, 2);
+    const char *buf = lua_tostring(L, 3);
+    int size = lua_rawlen(L, 3);
+    int messageNameSize = strlen(messageName);
+    int totalSize = size + 6 + messageNameSize;
+
+    char *package = lua_newuserdata(L, totalSize);
+
+    package[0] = session >> 24;
+    package[1] = session >> 16;
+    package[2] = session >> 8;
+    package[3] = session;
+    package[4] = messageNameSize >> 8;
+    package[5] = messageNameSize;
+    for(int i = 0; i < messageNameSize; ++i) {
+        package[i + 6] = messageName[i];
+    }
+
+    memcpy(package + 6 + messageNameSize, buf, size);
+
+    lua_pushlstring(L, package, totalSize);
+    
+    return 1;
 }
 
 int luaopen_connectionManager(lua_State *L) {
