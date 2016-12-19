@@ -14,7 +14,7 @@ To enter MongoDB shell terminal, execute this command:
 mongo --port 29000
 ```
 
-### Load Script
+### Load/Execute Script
 In MongoDB shell, execute this command:
 ``` bash
 load("path/to/script")
@@ -32,3 +32,14 @@ Run this command:
 ``` bash
 sudo service mongod stop
 ```
+
+## MySQL DB
+
+### Execute Script
+Execute the following command:
+``` bash
+mysql -uroot -p < /Path/To/mysqlTowerGirl.sql
+```
+After that enter mysql shell to check whether database and tables are created or not.
+
+
