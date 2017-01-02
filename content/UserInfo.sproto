@@ -1,0 +1,16 @@
+.UserAccount {
+    user_id 0 : string
+    account 1 : string
+    device 2 : string
+    facebook_account 3 : string
+    google_play_account 4 : string
+    identifier 5 : string
+}
+
+.UserGameInfo {
+    user_id 0 : string
+    level 1 : integer
+    exp 2 : integer
+    game_version 3 : string
+    last_login_time 4 : string
+}
