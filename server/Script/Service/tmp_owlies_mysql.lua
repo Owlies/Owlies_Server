@@ -2,7 +2,7 @@
 
 luasql = require "luasql.mysql"
 env = assert (luasql.mysql())
-con = assert (env:connect("towergirl","root","Yuer@13432063179","0.0.0.0",3306))
+con = assert (env:connect("db_name","user_name","password","host_ip",port))
 
 print(env,con)
 

@@ -45,7 +45,7 @@ int main(int argc, char **argv){
       exit(1);
   }
 
-  if (mysql_real_connect(con, "0.0.0.0", "root", "Yuer@13432063179", NULL, 0, NULL, 0) == NULL) 
+  if (mysql_real_connect(con, "host_ip", "user_name", "password", NULL, 0, NULL, 0) == NULL) 
   {
       fprintf(stderr, "mysql_init() failed\n");
       mysql_close(con);
