@@ -20,4 +20,6 @@ public:
     UnitProperty originProperty;
     UnitProperty finalProperty;
     UnitFactor factors;
+
+    OBJECT_TYPE GetType(){return UNIT};
 };

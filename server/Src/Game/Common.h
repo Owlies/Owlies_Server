@@ -1,0 +1,9 @@
+#pragma once
+
+enum OBJECT_TYPE
+{
+	OBJECT,
+	UNIT,
+	PROJECTILE,
+	AREA_EFFECT,
+}
