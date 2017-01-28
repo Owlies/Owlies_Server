@@ -6,7 +6,7 @@ local redis = require "hiredisExample"
 
 skynet.start(function()
 	physic.testprint("a")
-	redis.connectRedis("127.0.0.1", 8888);
+	redis.connectRedis("127.0.0.1", 6379);
 	local watchdog = skynet.newservice("owlies_watchdog")
 	skynet.call(watchdog, "lua", "start", {
 		port = 8888,

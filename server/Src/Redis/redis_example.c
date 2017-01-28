@@ -10,7 +10,7 @@
 static int connectRedis(lua_State *L) {
     const char *ip = lua_tostring(L, 1);
     int port = lua_tointeger(L, 2);
-    printf("redis ip: %s:%d", ip, port);
+    printf("redis ip: %s:%d\n", ip, port);
     redisContext *c = redisConnect(ip, port);
     if (c != NULL && c->err) {
         printf("Error: %s\n", c->errstr);

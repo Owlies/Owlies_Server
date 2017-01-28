@@ -35,18 +35,6 @@ create .bash_profile under root folder, add:
 ``` bash
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 ```
-<hr>
-
-### Build protobuf - c from Source
-https://github.com/protobuf-c/protobuf-c
-Master branch
-
-Run following command:
-``` bash
-./autogen.sh && ./configure && make && make install
-```
-
-<hr>
 
 ### Install Server
 Go to Owlies_Server/server/3rd/skynet
@@ -73,4 +61,14 @@ follow the manual install instructions
 
 then install lpeg:
 luarocks install lpeg
+
+### Install Redis Server
+cd to installs/redis-3.2.6
+make install
+
+cd to installs/hiredis
+make install
+
+To start redis server:
+redis-server
 

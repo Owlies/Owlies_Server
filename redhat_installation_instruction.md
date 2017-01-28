@@ -31,22 +31,6 @@ $ sudo make install
 $ sudo ldconfig # refresh shared library cache.
 ```
 
-<hr>
-
-### Build protobuf - c from Source
-https://github.com/protobuf-c/protobuf-c
-Master branch
-
-Run following command:
-``` bash
-./autogen.sh
-./configure
-make
-sudo make install
-```
-
-<hr>
-
 ### Environment Configuration 
 Add environment path
 ```bash
@@ -79,3 +63,13 @@ Go to Owlies_Server/server/
 source /etc/profile
 make all
 ```
+
+### Install Redis Server
+cd to installs/redis-3.2.6
+make install
+
+cd to installs/hiredis
+make install
+
+To start redis server:
+redis-server
