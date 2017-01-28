@@ -6,16 +6,13 @@ SHARED ?= --shared
 SKYNET_PATH ?= 3rd/skynet
 OWLIES_SRC ?= Src
 LUA_INTERFACE_PATH ?= $(OWLIES_SRC)/LuaInterface
-LUA_PROTOBUF_INTERFACE_PATH ?= $(OWLIES_SRC)/LuaInterface/LuaProtobufs
 LUA_INC ?= $(SKYNET_PATH)/3rd/lua
 LUALIB_INC ?= $(SKYNET_PATH)/lualib-src
 SKYNET_INC ?= $(SKYNET_PATH)/skynet-src
 HIREDIS_SRC ?= $(OWLIES_SRC)/Redis
 BUILD_PATH ?= Lib
 
-CFLAGS = -g -O2 -fPIC -Wall -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC) -I$(OWLIES_SRC)
-PROTOBUF_C_COMPILE_FLAG = `pkg-config --cflags 'libprotobuf-c >= 1.0.0'`
-PROTOBUF_C_LINK_FLAG = -lprotobuf-c `pkg-config --libs 'libprotobuf-c >= 1.0.0'`
+CFLAGS = -g -O2 -fPIC -Wall -std=c99 -I$(LUA_INC) -I$(LUALIB_INC) -I$(SKYNET_INC) -I$(OWLIES_SRC)
 LDFLAGS = -lhiredis
 
 $(BUILD_PATH) :

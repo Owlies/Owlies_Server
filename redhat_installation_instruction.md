@@ -61,15 +61,38 @@ make 'linux'
 Go to Owlies_Server/server/
 ``` bash
 source /etc/profile
-make all
+make linux
 ```
 
 ### Install Redis Server
 cd to installs/redis-3.2.6
-make install
-
-cd to installs/hiredis
-make install
+``` bash
+cd installs/redis-3.2.6
+make install MALLOC-libc
+```
 
 To start redis server:
-redis-server
+``` bash
+src/redis-server
+```
+
+cd to installs/hiredis
+``` bash
+cd installs/hiredis
+make install
+cp libhiredis.so /usr/lib/
+cp hiredis.h /usr/include/hiredis/
+cp read.h /usr/include/hiredis/
+cp sds.h /usr/include/hiredis/
+ldconfig
+```
+
+then
+``` bash
+cd server
+make clean
+make linux
+sh startserver.sh
+```
+if connected to redis then installation conplete!
+
