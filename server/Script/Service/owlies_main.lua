@@ -2,10 +2,11 @@ local skynet = require "skynet"
 require "skynet.manager"
 local physic = require "physic"
 --local max_client = 64
+local redis = require "hiredisExample"
 
 skynet.start(function()
-	print("game start")
 	physic.testprint("a")
+	redis.connectRedis("127.0.0.1", 8888);
 	local watchdog = skynet.newservice("owlies_watchdog")
 	skynet.call(watchdog, "lua", "start", {
 		port = 8888,

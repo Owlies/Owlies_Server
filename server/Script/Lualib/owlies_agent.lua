@@ -55,11 +55,19 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
+		print("Received data from client");
 		local obj = connectionManager.Instance().deserialize(msg, sz);
 		print_r(obj);
 		return obj;
 	end,
 	dispatch = function (_, _, type, ...)
+		local person = sp;
+		person.name = "Huayu";
+		person.id = 5000;
+		person.phone = {number = "222222", type = 3};
+		local package = connectionManager.Instance().serialize("Person", person);
+		print("send message to client");
+		send_package(package);
 		-- if type == "REQUEST" then
 		-- 	local ok, result  = pcall(request, ...)
 		-- 	if ok then
@@ -81,17 +89,18 @@ function CMD.start(conf)
 	local gate = conf.gate
 	WATCHDOG = conf.watchdog
 	-- slot 1,2 set at main.lua
-	skynet.fork(function()
-		while true do
-		    local person = sp;
-			person.name = "Huayu";
-			person.id = 5000;
-			person.phone = {number = "222222", type = 3};
-			local package = connectionManager.Instance().serialize("Person", person);
-			send_package(package);
-			skynet.sleep(500);
-		end
-	end)
+	-- skynet.fork(function()
+	-- 	while true do
+	-- 	    local person = sp;
+	-- 		person.name = "Huayu";
+	-- 		person.id = 5000;
+	-- 		person.phone = {number = "222222", type = 3};
+	-- 		local package = connectionManager.Instance().serialize("Person", person);
+	-- 		print("send message to client");
+	-- 		send_package(package);
+	-- 		skynet.sleep(500);
+	-- 	end
+	-- end)
 
 	client_fd = fd
 	skynet.call(gate, "lua", "forward", fd)
