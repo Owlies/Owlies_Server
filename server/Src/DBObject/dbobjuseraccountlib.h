@@ -50,4 +50,3 @@ static const struct luaL_Reg arrayFunc_userAccountMeta[] =
      {NULL, NULL}
 };
 
-//int luaopen_db_obj_useraccountlib(lua_State *L);

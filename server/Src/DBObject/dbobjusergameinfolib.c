@@ -46,7 +46,7 @@ static int set_user_gameinfo_level(lua_State *L) {
     luaL_argcheck(L, pUserGameInfo != NULL, 1, "Wrong Parameter: UserGameInfo Object is NULL");
 
     const int pLevel = luaL_checkinteger(L, 2);
-    luaL_argcheck(L, pLevel < 0, 2, "Wrong Parameter: Level of UserAccount");
+    luaL_argcheck(L, pLevel > 0, 2, "Wrong Parameter: Level of UserAccount");
     pUserGameInfo->level = pLevel;
     return 0;
 }
@@ -62,7 +62,7 @@ static int set_user_gameinfo_exp(lua_State *L) {
     luaL_argcheck(L, pUserGameInfo != NULL, 1, "Wrong Parameter: UserGameInfo Object is NULL");
 
     const int pExp = luaL_checkinteger(L, 2);
-    luaL_argcheck(L, pExp < 0, 2, "Wrong Parameter: Exp of UserAccount");
+    luaL_argcheck(L, pExp > 0, 2, "Wrong Parameter: Exp of UserAccount");
     pUserGameInfo->exp = pExp;
     return 0;
 }
@@ -100,9 +100,10 @@ static int set_user_gameinfo_last_login_time(lua_State *L) {
 }
 
 int luaopen_dbobjusergameinfolib(lua_State *L){
-    luaL_newmetatable(L, "UserGameInfo_Metatable");
-    lua_pushvalue(L, -1);
-    lua_setfield(L, -2, "__index");
+    luaL_newmetatable(L, "UserGameInfo");
+    lua_pushstring(L, "__index");
+    lua_pushvalue(L, -2);
+    lua_settable(L, -3);
     luaL_setfuncs(L, arrayFunc_userGameInfoMeta, 0);
     luaL_newlib(L, arrayFunc_userGameInfo);
 

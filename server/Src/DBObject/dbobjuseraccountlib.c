@@ -116,9 +116,10 @@ static int set_user_account_identifier(lua_State *L) {
 }
 
 int luaopen_dbobjuseraccountlib(lua_State *L){
-    luaL_newmetatable(L, "UserAccount_Metatable");
-    lua_pushvalue(L, -1);
-    lua_setfield(L, -2, "__index");
+    luaL_newmetatable(L, "UserAccount");
+    lua_pushstring(L, "__index");
+    lua_pushvalue(L, -2);
+    lua_settable(L, -3);
     luaL_setfuncs(L, arrayFunc_userAccountMeta, 0);
     luaL_newlib(L, arrayFunc_userAccount);
 

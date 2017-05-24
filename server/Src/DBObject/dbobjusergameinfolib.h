@@ -45,4 +45,3 @@ static const struct luaL_Reg arrayFunc_userGameInfoMeta[] =
         {NULL, NULL}
 };
 
-//int luaopen_db_obj_usergameinfolib(lua_State *L);
