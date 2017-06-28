@@ -1,6 +1,7 @@
 local sproto = require "sproto"
+local skynet = require "skynet"
 
-local sprotoSchemeFilePath = "sproto_files/";
+local sprotoSchemeFilePath = skynet.getenv("sprotoRoot");
 local sprotoSchemeFiles = {"Member"}
 
 -- Singleton Model --

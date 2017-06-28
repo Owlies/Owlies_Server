@@ -1,5 +1,6 @@
 root = "./3rd/skynet/"
 owliesRoot = "./Script/"
+sprotoRoot = "./../content/"
 thread = 8
 logger = nil
 logpath = "."
