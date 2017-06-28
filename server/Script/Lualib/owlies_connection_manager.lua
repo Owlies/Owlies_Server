@@ -4,7 +4,7 @@ local cmCore = require "connectionManager"
 
 require "owlies_sproto_scheme"
 
-local sp = sprotoSchemes:Instance().getScheme("Member");
+local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 local serverSession = 100;
 
 -- Singleton Model --

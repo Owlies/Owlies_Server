@@ -2,7 +2,7 @@ local sproto = require "sproto"
 local skynet = require "skynet"
 
 local sprotoSchemeFilePath = skynet.getenv("sprotoRoot");
-local sprotoSchemeFiles = {"Member"}
+local sprotoSchemeFiles = {"Client2Server", "Server2Client"}
 
 -- Singleton Model --
 sprotoSchemes = {}

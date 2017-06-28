@@ -1,0 +1,28 @@
+# Testing Sprotos
+.Person {
+    name 0 : string
+    id 1 : integer
+    email 2 : string
+
+    .PhoneNumber {
+        number 0 : string
+        type 1 : integer
+    }
+
+    phone 3 : *PhoneNumber
+}
+
+.AddressBook {
+    person 0 : *Person
+}
+
+# Login Sprotos
+
+.Login {
+    timestamp 0 : string
+    user_id 1 : string
+    user_account 2 : string
+    device_identifier 3 : string
+    client_version 4 : string
+    client_app_name 5 : string
+}

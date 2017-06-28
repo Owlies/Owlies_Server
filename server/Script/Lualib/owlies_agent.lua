@@ -8,7 +8,7 @@ local print_r = require "print_r"
 require "owlies_sproto_scheme"
 require "owlies_connection_manager"
 
-local sp = sprotoSchemes:Instance().getScheme("Member");
+local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 local connectionManager = connectionManager:Instance();
 
 local WATCHDOG
