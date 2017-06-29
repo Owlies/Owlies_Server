@@ -38,6 +38,11 @@ function deserialize(message, size)
     local messageType, session, messageName, messageNameLen, msg = cmCore.unpackMessage(message);
     local sz = size - 9 - messageNameLen;
     -- TODO(Huayu): verify session
+    print(messageType);
+    print(session);
+    print(messageName);
+    print(messageNameLen);
+    print(size);
     serverSession = session;
     return sp:decode(messageName, msg, sz);
 end

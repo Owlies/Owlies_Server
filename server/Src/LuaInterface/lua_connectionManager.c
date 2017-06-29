@@ -54,12 +54,6 @@ static int packMessage(lua_State *L) {
 
     lua_pushlstring(L, package, totalSize);
 
-    printf("%d\n", package[0]);
-    printf("%d\n", package[1]);
-    printf("%d\n", package[2]);
-    printf("%d\n", package[3]);
-
-    
     return 1;
 }
 

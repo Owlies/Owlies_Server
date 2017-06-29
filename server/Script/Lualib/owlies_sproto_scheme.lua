@@ -28,7 +28,7 @@ end
 -- Singleton Model --
 
 function readFile(filename)
-	local f = assert(io.open(filename), "Can't open sproto file");
+	local f = assert(io.open(filename), "Can't open sproto file " .. filename);
 	local data = f:read "a";
 	f:close();
 	local sp = sproto.parse(data);
