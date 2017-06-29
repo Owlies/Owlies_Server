@@ -1,5 +1,4 @@
-.DownloadMetadata {
-    name 0 : string
-    id 1 : integer
-    email 2 : string
+.LoginResponse {
+    state 0 : integer
+    message 1 : string
 }
