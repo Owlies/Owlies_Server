@@ -47,8 +47,8 @@ local function request(name, args, response)
 end
 
 local function send_package(pack)
-	-- local package = string.pack(">s2", pack)
-	socket.write(client_fd, pack)
+	local package = string.pack(">s2", pack)
+	socket.write(client_fd, package)
 end
 
 skynet.register_protocol {
@@ -56,6 +56,7 @@ skynet.register_protocol {
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
 		print("Received data from client");
+		print("sz", sz);
 		local obj = connectionManager.Instance().deserialize(msg, sz);
 		print_r(obj);
 		return obj;

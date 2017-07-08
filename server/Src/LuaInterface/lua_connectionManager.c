@@ -12,16 +12,16 @@ static int unpackMessage(lua_State *L) {
     char messageName[TYPE_STRING_MAX_LEN];
     char *buf = lua_touserdata(L, 1);
 
-    int messageType = buf[0];
-    int session = buf[1] << 24 | buf[2] << 16 | buf[3] << 8 | buf[4];
+    int session = buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3];
+    int messageType = buf[4];
     int messageNameLen = buf[5] << 8 | buf[6];
 
     for (int i = 0; i < messageNameLen && i < TYPE_STRING_MAX_LEN; ++i) {
         messageName[i] = buf[7 + i];
     }
     lua_settop(L, 0);
-    lua_pushinteger(L, messageType);
     lua_pushinteger(L, session);
+    lua_pushinteger(L, messageType);
     lua_pushstring(L, messageName);
     lua_pushinteger(L, messageNameLen);
     lua_pushlightuserdata(L, buf + 7 + messageNameLen);
@@ -53,12 +53,6 @@ static int packMessage(lua_State *L) {
     memcpy(package + 6 + messageNameSize, buf, size);
 
     lua_pushlstring(L, package, totalSize);
-
-    printf("%d\n", package[0]);
-    printf("%d\n", package[1]);
-    printf("%d\n", package[2]);
-    printf("%d\n", package[3]);
-
     
     return 1;
 }
