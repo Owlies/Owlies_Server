@@ -35,11 +35,18 @@ end
 
 function deserialize(message, size)
     print("deserialize");
-    local messageType, session, messageName, messageNameLen, msg = cmCore.unpackMessage(message);
-    local sz = size - 9 - messageNameLen;
+    local session, messageType, messageName, messageNameLen, msg = cmCore.unpackMessage(message);
+    local sz = size - 7 - messageNameLen;
+
     -- TODO(Huayu): verify session
     serverSession = session;
-    return sp:decode(messageName, msg, sz);
+
+    if not sp:exist_type(messageName) then 
+        print("Can't find sproto with typename: ", messageName);
+    end
+    local obj = sp:decode(messageName, msg, sz);
+
+    return obj;
 end
 
 function serialize(messageName, sprotoObj)
@@ -47,6 +54,7 @@ function serialize(messageName, sprotoObj)
     assert(type(sprotoObj) == "table");
     local code = sp:encode(messageName, sprotoObj);
     local package = cmCore.packMessage(messageName, serverSession, code);
+    print("serverSession", serverSession);
     serverSession = serverSession + 1;
     return package;
 end

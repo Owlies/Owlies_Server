@@ -14,4 +14,6 @@ skynet.start(function()
 		nodelay = true,
 		--address = "192.168.0.107",
 	})
+
+	skynet.exit();
 end)

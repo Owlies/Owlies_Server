@@ -19,6 +19,7 @@ static int unpackMessage(lua_State *L) {
     for (int i = 0; i < messageNameLen && i < TYPE_STRING_MAX_LEN; ++i) {
         messageName[i] = buf[7 + i];
     }
+
     lua_settop(L, 0);
     lua_pushinteger(L, session);
     lua_pushinteger(L, messageType);
