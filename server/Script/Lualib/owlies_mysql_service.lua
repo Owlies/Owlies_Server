@@ -107,6 +107,7 @@ function mysql_service_lib.add_new_user_account( mysql_db, useraccount )
     return
 end
 
+-- TODO : Add dump method to parse returned object 
 function mysql_service_lib.select_user_account_by_user_id( mysql_db, user_id )
 
     local sql_str = "select * from UserAccount where UserId = "..user_id
@@ -147,6 +148,7 @@ function mysql_service_lib.add_new_user_game_info( mysql_db, usergameinfo )
     return
 end
 
+-- TODO : Add dump method to parse returned object 
 function mysql_service_lib.select_user_gameinfo_by_user_id( mysql_db, user_id )
 
     local sql_str = "select * from UserGameInfo where UserId = "..user_id
