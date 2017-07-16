@@ -2,7 +2,6 @@ local skynet = require "skynet"
 local netpack = require "skynet.netpack"
 local socket = require "skynet.socket"
 
-local sproto = require "sproto"
 local print_r = require "print_r"
 
 require "owlies_sproto_scheme"
@@ -12,31 +11,7 @@ local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 local connectionManager = connectionManager:Instance();
 
 local WATCHDOG
-local host
-local sendRequest
-
 local CMD = {}
-local REQUEST = {}
-local clientFd
-
-function REQUEST:get()
-	print("get", self.what)
-	local r = skynet.call("SIMPLEDB", "lua", "get", self.what)
-	return { result = r }
-end
-
-function REQUEST:set()
-	print("set", self.what, self.value)
-	local r = skynet.call("SIMPLEDB", "lua", "set", self.what, self.value)
-end
-
-function REQUEST:handshake()
-	return { msg = "Welcome to skynet, I will send heartbeat every 5 sec." }
-end
-
-function REQUEST:quit()
-	skynet.call(WATCHDOG, "lua", "close", client_fd)
-end
 
 local function request(name, args, response)
 	local f = assert(REQUEST[name])
@@ -55,33 +30,18 @@ skynet.register_protocol {
 	name = "client",
 	id = skynet.PTYPE_CLIENT,
 	unpack = function (msg, sz)
-		print("Received data from client");
-		print("sz", sz);
-		local obj = connectionManager.Instance().deserialize(msg, sz);
-		print_r(obj);
-		return obj;
+		print("Unpack data from client");
+		return connectionManager.Instance().deserialize(msg, sz);
 	end,
-	dispatch = function (_, _, type, ...)
-		local person = sp;
-		person.name = "Huayu";
-		person.id = 5000;
-		person.phone = {number = "222222", type = 3};
-		local package = connectionManager.Instance().serialize("Person", person);
+	dispatch = function (_, _, sproto)
 		print("send message to client");
-		send_package(package);
-		-- if type == "REQUEST" then
-		-- 	local ok, result  = pcall(request, ...)
-		-- 	if ok then
-		-- 		if result then
-		-- 			send_package(result)
-		-- 		end
-		-- 	else
-		-- 		skynet.error(result)
-		-- 	end
-		-- else
-		-- 	assert(type == "RESPONSE")
-		-- 	error "This example doesn't support request client"
-		-- end
+		local success, response = pcall(skynet.call, "owlies_api", "lua", "receivedApiCall", sproto)
+		if success then
+			send_package(response);
+		else
+			skynet.error("Process api call failed")
+			skynet.error(response)	
+		end
 	end
 }
 
@@ -89,20 +49,6 @@ function CMD.start(conf)
 	local fd = conf.client
 	local gate = conf.gate
 	WATCHDOG = conf.watchdog
-	-- slot 1,2 set at main.lua
-	-- skynet.fork(function()
-	-- 	while true do
-	-- 	    local person = sp;
-	-- 		person.name = "Huayu";
-	-- 		person.id = 5000;
-	-- 		person.phone = {number = "222222", type = 3};
-	-- 		local package = connectionManager.Instance().serialize("Person", person);
-	-- 		print("send message to client");
-	-- 		send_package(package);
-	-- 		skynet.sleep(500);
-	-- 	end
-	-- end)
-
 	client_fd = fd
 	skynet.call(gate, "lua", "forward", fd)
 end
