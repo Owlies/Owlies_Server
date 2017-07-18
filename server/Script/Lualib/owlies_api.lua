@@ -7,15 +7,17 @@ require "owlies_connection_manager"
 -- TODO(Huayu): Should contain Server2Clinet, but the test sproto is in Client2Server
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 local connectionManager = connectionManager:Instance();
+local sprotoNames = require "sproto_names"
 
 local CMD ={}
+local networkSessionMap = {}
 
 local function stubResponse()
 	local person = sp;
 	person.name = "Huayu";
 	person.id = 5000;
 	person.phone = {number = "222222", type = 3};
-	return connectionManager.Instance().serialize("Person", person);
+	return connectionManager.Instance().serialize("Person", person, 100);
 end
 
 local function processApiCall(sproto)
@@ -23,9 +25,44 @@ local function processApiCall(sproto)
 	return stubResponse();
 end
 
-function CMD.receivedApiCall(sproto)
+function updateClientSession(clientFd, clientSession)
+	local serverSession = networkSessionMap[clientFd];
+	if serverSession ==nil or clientSession ~= serverSession + 1 then
+		skynet.error("Missing sessions: client " .. clientFd .. ", clientSession " .. clientSession .. ", serverSession " .. networkSessionMap[clientFd]);
+		return false;
+	end
+	networkSessionMap[clientFd] = clientSession;
+	return true;
+end
+
+function syncError()
+	-- TODO(Huayu): Implement
+	return "syncError";
+end
+
+function clientDisconnect()
+	networkSessionMap[clientFd] = nil;
+end
+
+function CMD.receivedApiCall(clientFd, clientSession, messageType, messageName, sproto)
 	print("---received api call---")
+
+	if sprotoNames.LoginRequest == messageName then
+		networkSessionMap[clientFd] = clientSession;
+	elseif not updateClientSession(clientFd, clientSession) then
+		return false, nil;
+	end		
+	
 	return processApiCall(sproto)
+end
+
+function CMD.receivedChangeEvent(clientFd, clientSession, messageType, messageName, sproto)
+	print("---received change event call---")
+	if not updateClientSession(clientFd, clientSession) then
+		return false;
+	end	
+	
+	return true;
 end
 
 skynet.start(function()

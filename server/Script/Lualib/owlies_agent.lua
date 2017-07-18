@@ -2,10 +2,9 @@ local skynet = require "skynet"
 local netpack = require "skynet.netpack"
 local socket = require "skynet.socket"
 
-local print_r = require "print_r"
-
 require "owlies_sproto_scheme"
 require "owlies_connection_manager"
+local eMessageType = require "message_request_type"
 
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 local connectionManager = connectionManager:Instance();
@@ -33,14 +32,24 @@ skynet.register_protocol {
 		print("Unpack data from client");
 		return connectionManager.Instance().deserialize(msg, sz);
 	end,
-	dispatch = function (_, _, sproto)
+	dispatch = function (_, _, sproto, clientSession, messageType, messageName)
 		print("send message to client");
-		local success, response = pcall(skynet.call, "owlies_api", "lua", "receivedApiCall", sproto)
-		if success then
-			send_package(response);
-		else
+		local success = false;
+		local response = nil;
+		if messageType == eMessageType.ChangeEvent then
+			success = pcall(skynet.call, "owlies_api", "lua", "receivedApiCall", client_fd, clientSession, messageType, messageName, sproto);
+		elseif messageType == eMessageType.ApiCall then
+			 success, response = pcall(skynet.call, "owlies_api", "lua", "receivedChangeEvent", client_fd, clientSession, messageType, messageName, sproto);
+		end
+
+		if not success then
 			skynet.error("Process api call failed")
-			skynet.error(response)	
+			skynet.error(response)
+			response = pcall(skynet.call, "owlies_api", "lua", "syncError");
+		end
+
+		if success and response ~= nil then
+			send_package(response);
 		end
 	end
 }

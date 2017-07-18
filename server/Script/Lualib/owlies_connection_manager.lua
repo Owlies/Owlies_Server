@@ -5,7 +5,7 @@ local cmCore = require "connectionManager"
 require "owlies_sproto_scheme"
 
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
-local serverSession = 100;
+
 
 -- Singleton Model --
 connectionManager = {};
@@ -38,23 +38,18 @@ function deserialize(message, size)
     local session, messageType, messageName, messageNameLen, msg = cmCore.unpackMessage(message);
     local sz = size - 7 - messageNameLen;
 
-    -- TODO(Huayu): verify session
-    serverSession = session;
-
     if not sp:exist_type(messageName) then 
         print("Can't find sproto with typename: ", messageName);
     end
     local obj = sp:decode(messageName, msg, sz);
 
-    return obj;
+    return obj, session, messageType, messageName;
 end
 
-function serialize(messageName, sprotoObj)
+function serialize(messageName, sprotoObj, serverSession)
     assert(type(messageName) == "string");
     assert(type(sprotoObj) == "table");
     local code = sp:encode(messageName, sprotoObj);
     local package = cmCore.packMessage(messageName, serverSession, code);
-    print("serverSession", serverSession);
-    serverSession = serverSession + 1;
     return package;
 end
