@@ -18,7 +18,7 @@ LDFLAGS = -lhiredis
 $(BUILD_PATH) :
 	mkdir $(BUILD_PATH)
 
-all: skynet $(BUILD_PATH)/physic.so $(BUILD_PATH)/connectionManager.so $(BUILD_PATH)/hiredisExample.so
+all: skynet $(BUILD_PATH)/physic.so $(BUILD_PATH)/connectionManager.so $(BUILD_PATH)/hiredis.so
 
 skynet :
 	cd $(SKYNET_PATH) && make $(PLAT)
@@ -30,7 +30,7 @@ $(BUILD_PATH)/physic.so : $(LUA_INTERFACE_PATH)/lua_physic.c | $(BUILD_PATH)
 $(BUILD_PATH)/connectionManager.so : $(LUA_INTERFACE_PATH)/lua_connectionManager.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(OWLIES_LIBS) -o $@ $^
 
-$(BUILD_PATH)/hiredisExample.so : $(HIREDIS_SRC)/redis_example.c | $(BUILD_PATH)
+$(BUILD_PATH)/hiredis.so : $(HIREDIS_SRC)/hiredis.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(LDFLAGS) $(OWLIES_LIBS) -o $@ $^
 
 clean:

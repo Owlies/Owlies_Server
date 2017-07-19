@@ -3,7 +3,6 @@ local print_r = require "print_r"
 local cmCore = require "connectionManager"
 
 require "owlies_sproto_scheme"
-
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 
 

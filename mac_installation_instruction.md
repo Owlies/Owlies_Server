@@ -67,7 +67,7 @@ cd to installs/redis-3.2.6
 make install
 
 cd to installs/hiredis
-make install
+http://macappstore.org/hiredis/
 
 To start redis server:
 redis-server

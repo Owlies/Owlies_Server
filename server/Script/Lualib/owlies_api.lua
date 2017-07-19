@@ -12,6 +12,9 @@ local sprotoNames = require "sproto_names"
 local CMD ={}
 local networkSessionMap = {}
 
+-- TODO(Huayu): Remove
+local testKey = "huayu"
+
 local function stubResponse()
 	local person = sp;
 	person.name = "Huayu";
@@ -20,8 +23,11 @@ local function stubResponse()
 	return connectionManager.Instance().serialize("Person", person, 100);
 end
 
-local function processApiCall(sproto)
+local function processApiCall(sproto, sprotoName)
 	print_r(sproto);
+	pcall(skynet.call, "owlies_redis", "lua", "setSproto", testKey, sprotoName, sproto);
+	local obj = pcall(skynet.call, "owlies_redis", "lua", "getSproto", testKey, sprotoName);
+	print_r(obj);
 	return stubResponse();
 end
 
@@ -44,16 +50,16 @@ function clientDisconnect()
 	networkSessionMap[clientFd] = nil;
 end
 
-function CMD.receivedApiCall(clientFd, clientSession, messageType, messageName, sproto)
+function CMD.receivedApiCall(clientFd, clientSession, messageType, sprotoName, sproto)
 	print("---received api call---")
 
-	if sprotoNames.LoginRequest == messageName then
+	if sprotoNames.LoginRequest == sprotoName then
 		networkSessionMap[clientFd] = clientSession;
 	elseif not updateClientSession(clientFd, clientSession) then
 		return false, nil;
 	end		
 	
-	return processApiCall(sproto)
+	return processApiCall(sproto, sprotoName)
 end
 
 function CMD.receivedChangeEvent(clientFd, clientSession, messageType, messageName, sproto)
