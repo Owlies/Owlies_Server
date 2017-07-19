@@ -31,21 +31,25 @@ end
 function CMD.setSproto(key, sprotoType, sproto)
     reconnectIfNecessary();
     local code = sp:encode(sprotoType, sproto);
-    local res = redis.redisSetString(redisContext, key, code);
+    local sz = string.len(code);
+    local res = redis.redisSetByteString(redisContext, key, code, sz);
 end
 
 function CMD.getSproto(key, sprotoType)
     reconnectIfNecessary();
-    local value = redis.redisGetString(redisContext, key);
-    local sproto = sp:decode(sprotoType, value, strlen(value));
-    return sproto;
+    local value, sz = redis.redisGetByteString(redisContext, key);
+    if value == nil then
+        print("Can't find sproto for key " .. key);
+        return nil;
+    end
+
+    return sp:decode(sprotoType, value, sz);
 end
 
 skynet.start(function()
-    reconnectIfNecessary();
+    redisContext = redis.redisConnect(redisAddr, redisPort);
 
 	skynet.dispatch("lua", function(session, source, cmd, ...)
-		print(session)
 		local f = CMD[cmd]
 		if f then
 			skynet.ret(skynet.pack(f(...)))

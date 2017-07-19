@@ -35,15 +35,16 @@ static int disconnect(lua_State *L) {
     return 0;
 }
 
-static int setString(lua_State *L) {
+static int setByteString(lua_State *L) {
     redisContext *context = lua_touserdata(L, 1);
     const char *key = lua_tostring(L, 2);
     const char *value = lua_tostring(L, 3);
-    printf("get value\n");
+    int sz = lua_tointeger(L, 4);
+ 
     redisReply *reply;
-    reply = redisCommand(context, "SET %s %s", key, value);
-    printf("%s\n", reply->str);
-    lua_pushlstring(L, reply->str, strlen(reply->str));
+    reply = redisCommand(context, "SET %s %b", key, value, (size_t)sz);
+
+    lua_pushlstring(L, reply->str, reply->len);
 
     freeReplyObject(reply);
     reply = NULL;
@@ -51,12 +52,13 @@ static int setString(lua_State *L) {
     return 1;
 }
 
-static int getString(lua_State *L) {
+static int getByteString(lua_State *L) {
     redisContext *context = lua_touserdata(L, 1);
     const char *key = lua_tostring(L, 2);
     redisReply *reply;
     reply = redisCommand(context, "GET %s", key);
-    lua_pushlstring(L, reply->str, strlen(reply->str));
+
+    lua_pushlstring(L, reply->str, reply->len);
 
     freeReplyObject(reply);
     reply = NULL;
@@ -82,8 +84,8 @@ int luaopen_hiredis(lua_State *L) {
 	luaL_Reg l[] = {
         {"redisConnect", connect},
         {"redisDisconnect", disconnect},
-        {"redisSetString", setString},
-        {"redisGetString", getString},
+        {"redisSetByteString", setByteString},
+        {"redisGetByteString", getByteString},
         {"redisPing", ping},
 		{ NULL, NULL },
 	};

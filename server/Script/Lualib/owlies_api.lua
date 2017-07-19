@@ -23,11 +23,11 @@ local function stubResponse()
 	return connectionManager.Instance().serialize("Person", person, 100);
 end
 
-local function processApiCall(sproto, sprotoName)
+local function processApiCall(sproto, sprotoType)
 	print_r(sproto);
-	pcall(skynet.call, "owlies_redis", "lua", "setSproto", testKey, sprotoName, sproto);
-	local obj = pcall(skynet.call, "owlies_redis", "lua", "getSproto", testKey, sprotoName);
-	print_r(obj);
+	pcall(skynet.call, "owlies_redis", "lua", "setSproto", testKey, sprotoType, sproto);
+	local success, obj = pcall(skynet.call, "owlies_redis", "lua", "getSproto", testKey, sprotoType);
+	print_r(obj)
 	return stubResponse();
 end
 

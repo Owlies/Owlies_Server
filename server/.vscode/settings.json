@@ -46,6 +46,8 @@
         "event.h": "c",
         "zone_info.h": "c",
         "malloc.h": "c",
-        "sds.h": "c"
+        "sds.h": "c",
+        "stddef.h": "c",
+        "_null.h": "c"
     }
 }
