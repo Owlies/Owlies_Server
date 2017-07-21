@@ -18,3 +18,15 @@ print ("The set GooglePlayAccount : https://plus.google.com/u/0/+BaichuanYANG an
 
 objUserAccount:setUserAccountIdentifier("music_run_uid_0523")
 print ("The set Identifier : music_run_uid_0523 and get Identifier : " .. objUserAccount:getUserAccountIdentifier())
+
+print ("The returned Redis Item Key : "..objUserAccount:getUserAccountRedisItemKey());
+
+print ("The returned Redis Item Value : "..objUserAccount:getUserAccountRedisItemValue());
+
+objUserAccount_second = useraccountlib.new()
+
+objUserAccount_second:setUserAccountUserId("uid_0717")
+print ("For second object : The set UserId : uid_0717 and get UserId : " .. objUserAccount_second:getUserAccountUserId())
+
+print ("For first object : The set UserId : uid_0523 and get UserId : " .. objUserAccount:getUserAccountUserId())
+

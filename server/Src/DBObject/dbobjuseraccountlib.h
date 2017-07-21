@@ -26,6 +26,8 @@ static int get_user_account_google_play_account(lua_State *L);
 static int set_user_account_google_play_account(lua_State *L);
 static int get_user_account_identifier(lua_State *L);
 static int set_user_account_identifier(lua_State *L);
+static int get_user_account_redis_item_key(lua_State *L);
+static int get_user_account_redis_item_value(lua_State *L);
 
 static const struct luaL_Reg arrayFunc_userAccount[] =
 {
@@ -47,6 +49,8 @@ static const struct luaL_Reg arrayFunc_userAccountMeta[] =
      {"setUserAccountGooglePlayAccount", set_user_account_google_play_account},
      {"getUserAccountIdentifier", get_user_account_identifier},
      {"setUserAccountIdentifier", set_user_account_identifier},
+     {"getUserAccountRedisItemKey", get_user_account_redis_item_key},
+     {"getUserAccountRedisItemValue", get_user_account_redis_item_value},
      {NULL, NULL}
 };
 
