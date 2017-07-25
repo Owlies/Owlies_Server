@@ -14,6 +14,8 @@
 
 char * REDIS_SET_BYTE_STRING_ERROR = "Fail to send key-value pair to Redis due to connection failure";
 char * REDIS_GET_BYTE_STRING_ERROR = "Fail to get key-value pair from Redis due to connection failure";
+char * REDIS_SET_BYTE_STRING_ERROR_LEN = "62";
+char * REDIS_GET_BYTE_STRING_ERROR_LEN = "63";
 
 typedef struct clientconfig {
     char *ip;
@@ -104,7 +106,7 @@ static int setByteString(lua_State *L) {
         printf("Already tried many times to connect to Redis but all failed.");
         if(context)
             redisFree(context);
-        lua_pushlstring(L, REDIS_SET_BYTE_STRING_ERROR, "62");
+        lua_pushlstring(L, REDIS_SET_BYTE_STRING_ERROR, REDIS_SET_BYTE_STRING_ERROR_LEN);
         return 1;
     }
 
@@ -142,7 +144,7 @@ static int getByteString(lua_State *L) {
         if(context)
             redisFree(context);
         lua_pushlightuserdata(L, context);
-        lua_pushlstring(L, REDIS_GET_BYTE_STRING_ERROR, "63");
+        lua_pushlstring(L, REDIS_GET_BYTE_STRING_ERROR, REDIS_GET_BYTE_STRING_ERROR_LEN);
         return 1;
     }
 
