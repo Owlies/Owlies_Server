@@ -7,29 +7,14 @@ local redisPort = skynet.getenv("redisPort");
 local Methods = {};
 
 local hiredisUtil = hiredisUtil:Instance();
-local redisContext = {};
 local errorPrefix = "[RedisError] ";
 
 local redis = require "hiredis"
 require "owlies_sproto_scheme"
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 
-function updateRedisContext()
-    local connected, redisC = hiredisUtil.reconnectIfNecessary(redisContext, redisAddr, redisPort);
-    if not connected then
-        print(errorPrefix .. "Failed to updateRedisContext");
-        return false;
-    end
-
-    redisContext = redisC;
-
-    return true;
-end
-
+-- FIXME: A better method name should be * createOrUpdateRedisSproto *
 function Methods.updateRedisSproto(key, sprotoType, sproto)
-    if not updateRedisContext() then
-        return false;
-    end
 
     local success = hiredisUtil.setSproto(redisContext, key, sprotoType, sproto);
     if not success then
@@ -40,9 +25,6 @@ function Methods.updateRedisSproto(key, sprotoType, sproto)
 end
 
 function Methods.loadRedisSproto(key, sprotoType)
-    if not updateRedisContext() then
-        return false, nil;
-    end
 
     local success, sproto = hiredisUtil.getSproto(redisContext, key, sprotoType);
     if not success then
@@ -53,7 +35,8 @@ function Methods.loadRedisSproto(key, sprotoType)
 end
 
 skynet.start(function()
-    updateRedisContext();
+
+    hiredisUtil.initRedisContext()
 
 	skynet.dispatch("lua", function(session, source, cmd, ...)
 		local f = Methods[cmd]

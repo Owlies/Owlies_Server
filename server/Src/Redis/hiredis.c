@@ -87,7 +87,10 @@ static int connectWithRetry(lua_State *L) {
         lua_pushboolean(L, 0);
         return 1;
     }
-    
+
+    //Note: Test it out. It should only returns the context and ignore the boolean because
+    //every lua_pushxxx method will create one stack and the next lua_pushxxx method will
+    //override the stack created by last push method.
     lua_pushboolean(L, 1);
     lua_pushlightuserdata(L, context);
     return 2;
