@@ -25,8 +25,8 @@ end
 
 local function processApiCall(sproto, sprotoType)
 	print_r(sproto);
-	pcall(skynet.call, "owlies_redis", "lua", "setSproto", testKey, sprotoType, sproto);
-	local success, obj = pcall(skynet.call, "owlies_redis", "lua", "getSproto", testKey, sprotoType);
+	pcall(skynet.call, "owlies_redis", "lua", "updateRedisSproto", testKey, sprotoType, sproto);
+	local success, obj = pcall(skynet.call, "owlies_redis", "lua", "loadRedisSproto", testKey, sprotoType);
 	print_r(obj)
 	return stubResponse();
 end

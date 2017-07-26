@@ -1,5 +1,5 @@
 local skynet = require "skynet"
-local netpack = require "skynet.netpack"
+local netpack = require "netpack"
 
 local CMD = {}
 local SOCKET = {}

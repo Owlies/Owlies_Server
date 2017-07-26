@@ -1,6 +1,6 @@
 local skynet = require "skynet"
-local netpack = require "skynet.netpack"
-local socket = require "skynet.socket"
+local netpack = require "netpack"
+local socket = require "socket"
 
 require "owlies_sproto_scheme"
 require "owlies_connection_manager"
