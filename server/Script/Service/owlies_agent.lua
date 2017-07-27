@@ -33,11 +33,10 @@ skynet.register_protocol {
 		return connectionManager.Instance().deserialize(msg, sz);
 	end,
 	dispatch = function (_, _, sproto, clientSession, messageType, messageName)
-		print("send message to client");
 		local success = false;
 		local response = nil;
 		if messageType == eMessageType.ChangeEvent then
-			success = pcall(skynet.call, "owlies_api", "lua", "receivedApiCall", client_fd, clientSession, messageType, messageName, sproto);
+			success, response = pcall(skynet.call, "owlies_api", "lua", "receivedApiCall", client_fd, clientSession, messageType, messageName, sproto);
 		elseif messageType == eMessageType.ApiCall then
 			 success, response = pcall(skynet.call, "owlies_api", "lua", "receivedChangeEvent", client_fd, clientSession, messageType, messageName, sproto);
 		end
@@ -49,6 +48,7 @@ skynet.register_protocol {
 		end
 
 		if success and response ~= nil then
+			print("send message to client");
 			send_package(response);
 		end
 	end

@@ -3,6 +3,7 @@ require "skynet.manager"
 local print_r = require "print_r"
 require "owlies_sproto_scheme"
 require "owlies_connection_manager"
+local loginRequestObject = require "login_request_object"
 
 -- TODO(Huayu): Should contain Server2Clinet, but the test sproto is in Client2Server
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
@@ -16,18 +17,24 @@ local networkSessionMap = {}
 local testKey = "huayu"
 
 local function stubResponse()
-	local person = sp;
+	local person = sp:host "Person";
 	person.name = "Huayu";
 	person.id = 5000;
 	person.phone = {number = "222222", type = 3};
+
 	return connectionManager.Instance().serialize("Person", person, 100);
 end
 
 local function processApiCall(sproto, sprotoType)
-	print_r(sproto);
 	pcall(skynet.call, "owlies_redis", "lua", "updateRedisSproto", testKey, sprotoType, sproto);
 	local success, obj = pcall(skynet.call, "owlies_redis", "lua", "loadRedisSproto", testKey, sprotoType);
-	print_r(obj)
+	
+	local dbobj = loginRequestObject.new(obj);
+	local ssp = dbobj.toSproto();
+
+	-- TODO(Huayu): Server session
+	local dbobjSproto = connectionManager.Instance().serialize(dbobj.getSprotoName(), ssp, 100);
+	print(dbobjSproto)
 	return stubResponse();
 end
 
@@ -56,7 +63,7 @@ function CMD.receivedApiCall(clientFd, clientSession, messageType, sprotoName, s
 	if sprotoNames.LoginRequest == sprotoName then
 		networkSessionMap[clientFd] = clientSession;
 	elseif not updateClientSession(clientFd, clientSession) then
-		return false, nil;
+		return nil;
 	end		
 	
 	return processApiCall(sproto, sprotoName)
@@ -65,10 +72,10 @@ end
 function CMD.receivedChangeEvent(clientFd, clientSession, messageType, messageName, sproto)
 	print("---received change event call---")
 	if not updateClientSession(clientFd, clientSession) then
-		return false;
+		return nil;
 	end	
 	
-	return true;
+	return nil;
 end
 
 skynet.start(function()
