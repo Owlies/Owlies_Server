@@ -1,9 +1,12 @@
-require "object_base"
-local sp = sprotoSchemes:Instance().getScheme("Client2Server");
+local objectBase = require "c2s_object_base"
 local sprotoNames = require "sproto_names";
-require "owlies_connection_manager"
+
+local loginRequestObject = {};
+setmetatable(loginRequestObject, objectBase);
+loginRequestObject.__index = loginRequestObject;
 
 local _properties = {};
+_properties = {};
 _properties.timestamp = nil;
 _properties.user_id = nil;
 _properties.user_account = nil;
@@ -11,29 +14,16 @@ _properties.device_identifier = nil;
 _properties.client_version = nil;
 _properties.client_app_name = nil;
 
-local M = {properties = _properties};
-setmetatable()
+loginRequestObject.properties = _properties;
 
-function M.getSprotoName()
-    return sprotoNames.LoginRequest;
+function loginRequestObject.getSprotoName()
+    return sprotoNames.LoginRequest
 end
 
-function M.new(sproto)
-    print("loginRequestObject")
-    for i,v in pairs(sproto) do
-        M.properties[i] = v;
-    end
-
-    return M;
+function loginRequestObject:new(sproto)
+    local newInstance = objectBase:new(sproto);
+    setmetatable(newInstance, loginRequestObject)
+    return newInstance;
 end
 
-function M.toSproto()
-    local sproto = sp:host(M.getSprotoName());
-    for i,v in pairs(M.properties) do
-        sproto[i] = v;
-    end
-    
-    return sproto;
-end
-
-return M;
+return loginRequestObject;
