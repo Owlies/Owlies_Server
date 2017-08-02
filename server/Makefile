@@ -18,7 +18,7 @@ LDFLAGS = -lhiredis
 $(BUILD_PATH) :
 	mkdir $(BUILD_PATH)
 
-all: skynet $(BUILD_PATH)/physic.so $(BUILD_PATH)/connectionManager.so $(BUILD_PATH)/hiredis.so $(BUILD_PATH)/mysqlutil.so
+all: skynet $(BUILD_PATH)/physic.so $(BUILD_PATH)/connectionManager.so $(BUILD_PATH)/hiredis.so
 
 skynet :
 	cd $(SKYNET_PATH) && make $(PLAT)
