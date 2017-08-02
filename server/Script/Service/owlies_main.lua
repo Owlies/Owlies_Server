@@ -8,6 +8,7 @@ skynet.start(function()
 
 	skynet.uniqueservice("owlies_redis")
 	skynet.newservice("owlies_api")
+	skynet.newservice("db_service")
 
 	local watchdog = skynet.newservice("owlies_watchdog")
 	skynet.call(watchdog, "lua", "start", {

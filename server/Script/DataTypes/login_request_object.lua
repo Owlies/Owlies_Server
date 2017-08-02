@@ -1,8 +1,8 @@
-local objectBase = require "c2s_object_base"
+local c2sObjectBase = require "c2s_object_base"
 local sprotoNames = require "sproto_names";
 
 local loginRequestObject = {};
-setmetatable(loginRequestObject, objectBase);
+setmetatable(loginRequestObject, c2sObjectBase);
 loginRequestObject.__index = loginRequestObject;
 
 local _properties = {};
@@ -21,7 +21,7 @@ function loginRequestObject.getSprotoName()
 end
 
 function loginRequestObject:new(sproto)
-    local newInstance = objectBase:new(sproto);
+    local newInstance = c2sObjectBase:new(sproto);
     setmetatable(newInstance, loginRequestObject)
     return newInstance;
 end

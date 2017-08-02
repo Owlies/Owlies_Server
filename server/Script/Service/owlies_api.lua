@@ -30,10 +30,10 @@ local function processApiCall(sproto, sprotoType)
 	local success, obj = pcall(skynet.call, "owlies_redis", "lua", "loadRedisSproto", testKey, sprotoType);
 	-- print_r(obj)
 
-	-- local objb = loginRequestObject:new(sproto)
-
-	-- local sprotob = objb:toSproto();
-	-- print_r(sprotob);
+	local objb = loginRequestObject:new(sproto)
+	objb.insertOnDuplicate();
+	local sprotob = objb:toSproto();
+	print_r(sprotob);
 
 	return stubResponse();
 end

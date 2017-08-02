@@ -1,9 +1,11 @@
+local objectBase = require "object_base"
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 
-local objectBase = {}
-objectBase.__index = objectBase;
+local c2sObjectBase = {}
+setmetatable(c2sObjectBase, objectBase);
+c2sObjectBase.__index = c2sObjectBase;
 
-function objectBase:new(sproto)
+function c2sObjectBase:new(sproto)
     local newInstance = newInstance or {};
     newInstance.properties = newInstance.properties or {};
 
@@ -16,7 +18,7 @@ function objectBase:new(sproto)
     return newInstance;
 end
 
-function objectBase:toSproto()
+function c2sObjectBase:toSproto()
     local sproto = sp:host(self.getSprotoName());
     for i,v in pairs(self.properties) do
         sproto[i] = v;
@@ -25,5 +27,5 @@ function objectBase:toSproto()
     return sproto;
 end
 
-return objectBase;
+return c2sObjectBase;
 
