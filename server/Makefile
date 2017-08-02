@@ -33,9 +33,6 @@ $(BUILD_PATH)/connectionManager.so : $(LUA_INTERFACE_PATH)/lua_connectionManager
 $(BUILD_PATH)/hiredis.so : $(HIREDIS_SRC)/hiredis.c | $(BUILD_PATH)
 	$(CC) $(CFLAGS) $(SHARED) $(LDFLAGS) $(OWLIES_LIBS) -o $@ $^
 
-$(BUILD_PATH)/mysqlutil.so : $(LUA_INTERFACE_PATH)/mysql_util.c | $(BUILD_PATH)
-	$(CC) $(CFLAGS) -I/usr/local/mysql/include -L/usr/local/mysql/lib -lmysqlclient $(SHARED) $(LDFLAGS) $(OWLIES_LIBS) -o $@ $^
-
 clean:
 	cd $(SKYNET_PATH) && make clean
 	rm -r -f $(BUILD_PATH)
