@@ -17,7 +17,7 @@ local networkSessionMap = {}
 local testKey = "huayu"
 
 local function stubResponse()
-	local person = sp;
+	local person = sp:host("Person");
 	person.name = "Huayu";
 	person.id = 5000;
 	person.phone = {number = "222222", type = 3};
