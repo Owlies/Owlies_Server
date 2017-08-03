@@ -47,10 +47,25 @@ function objectBase:insertOnDuplicate()
     -- Remove last ',' 
     sql = string.sub(sql, 1, -2) .. ") ON DUPLICATE KEY UPDATE ";
 
-    -- First one is primary key
-    for i = 2, #columns do
-        local value = self.properties[columns[i]];
-        sql = sql .. columns[i] .. " = '" .. value .. "', ";
+    -- Remove primaryKeys
+    local columnsToUpdate = {};
+
+    for i,v in pairs(columns) do
+        local isPrimarykey = false;
+        for j = 1, #primaryKeys do
+            if primaryKeys[j] == v then
+                isPrimarykey = true;
+                break;
+            end
+        end
+        if not isPrimarykey then
+            table.insert(columnsToUpdate, v);
+        end
+    end
+
+    for i = 1, #columnsToUpdate do
+        local value = self.properties[columnsToUpdate[i]];
+        sql = sql .. columnsToUpdate[i] .. " = '" .. value .. "', ";
     end
     -- Remove last ', ' 
     sql = string.sub(sql, 1, -3) .. ";";
