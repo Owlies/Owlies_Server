@@ -31,9 +31,9 @@ local function processApiCall(sproto, sprotoType)
 	-- print_r(obj)
 
 	local objb = loginRequestObject:new(sproto)
-	objb.insertOnDuplicate();
+	objb:insertOnDuplicate();
 	local sprotob = objb:toSproto();
-	print_r(sprotob);
+	-- print_r(sprotob);
 
 	return stubResponse();
 end

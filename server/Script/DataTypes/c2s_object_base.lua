@@ -5,8 +5,8 @@ local c2sObjectBase = {}
 setmetatable(c2sObjectBase, objectBase);
 c2sObjectBase.__index = c2sObjectBase;
 
-function c2sObjectBase:new(sproto)
-    local newInstance = newInstance or {};
+function c2sObjectBase:instantiate(sproto)
+    local newInstance = objectBase:instantiate(sproto);
     newInstance.properties = newInstance.properties or {};
 
     setmetatable(newInstance, self)

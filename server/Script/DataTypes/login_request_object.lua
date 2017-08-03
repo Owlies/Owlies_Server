@@ -16,14 +16,29 @@ _properties.client_app_name = nil;
 
 loginRequestObject.properties = _properties;
 
+function loginRequestObject.getTableName()
+    return "user_login";
+end
+
 function loginRequestObject.getSprotoName()
-    return sprotoNames.LoginRequest
+    return sprotoNames.LoginRequest;
+end
+
+function loginRequestObject.getPrimaryKeys()
+    return {"user_id"};
+end
+
+function instantiate(sproto)
+    local newInstance = c2sObjectBase:instantiate(sproto);
+    setmetatable(newInstance, loginRequestObject)
+    return newInstance;
 end
 
 function loginRequestObject:new(sproto)
-    local newInstance = c2sObjectBase:new(sproto);
-    setmetatable(newInstance, loginRequestObject)
-    return newInstance;
+    local instance = instantiate(sproto);
+    local columnNames = instance:getColumnNames();
+    loginRequestObject.columns = columnNames;
+    return instance;
 end
 
 return loginRequestObject;
