@@ -1,4 +1,5 @@
 .LoginResponse {
-    state 0 : integer
-    message 1 : string
+    user_id 0 : string
+    timestamp 1 : string
+    energy 2 : integer
 }
