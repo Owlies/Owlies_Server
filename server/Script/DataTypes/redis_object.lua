@@ -1,8 +1,7 @@
 local skynet = require "skynet"
 local class = require "middleclass"
-
 local ObjectBase = require "object_base"
-
+local paker = require "packer"
 local RedisObject = class("RedisObject", ObjectBase);
 
 function RedisObject:initialize()
@@ -21,17 +20,14 @@ function RedisObject:getRedisKey()
     return redisKey;
 end
 
-function RedisObject:seralizeProperties()
-    
-end
-
 function RedisObject:loadRedisCache()
 
 end
 
 function RedisObject:updateRedis()
     local redisKey = getRedisKey();
-
+    local json = packer.pack(self);
+    print(json)
 end
 
 return RedisObject;

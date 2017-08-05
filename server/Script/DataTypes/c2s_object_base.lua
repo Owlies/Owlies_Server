@@ -13,16 +13,11 @@ function C2sObjectBase:initialize(sproto)
     end
 end
 
-function C2sObjectBase:toSproto()
-    return ObjectBase.toSproto(self, sp);
-end
-
 -- Should exclude 'class', 'columns'
 function C2sObjectBase:toSproto()
     local sproto = sp:host(self.getSprotoName());
     for i,v in pairs(self) do
         if type(v) ~= "function" and i ~= "class" and i~= "columns" then
-            print(i)
             sproto[i] = v;
         end
     end

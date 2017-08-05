@@ -10,3 +10,4 @@ server/3rd/pbc/build
 *.so
 database/dataBaseConnect
 .vscode
+lua-cjson

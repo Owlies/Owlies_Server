@@ -27,9 +27,9 @@ end
 
 local function processApiCall(sproto, sprotoType)
 	-- print_r(sproto);
-	pcall(skynet.call, "owlies_redis", "lua", "updateRedisSproto", testKey, sprotoType, sproto);
-	local success, obj = pcall(skynet.call, "owlies_redis", "lua", "loadRedisSproto", testKey, sprotoType);
-	print_r(obj)
+	-- pcall(skynet.call, "owlies_redis", "lua", "updateRedisSproto", testKey, sprotoType, sproto);
+	-- local success, obj = pcall(skynet.call, "owlies_redis", "lua", "loadRedisSproto", testKey, sprotoType);
+	-- print_r(obj)
 
 	local objb = loginRequestObject:new(sproto)
 	objb:insertOnDuplicate();
@@ -37,7 +37,7 @@ local function processApiCall(sproto, sprotoType)
 	print_r(sprotob);
 
 	local response = loginResponseObject:new(objb.user_id);
-
+	-- objb:updateRedis();
 	return stubResponse();
 end
 

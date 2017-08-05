@@ -9,16 +9,11 @@ function S2cObjectBase:initialize()
     return RedisObject.loadByPrimaryKeys(self);
 end
 
-function S2cObjectBase:toSproto()
-    return RedisObject.toSproto(self, sp);
-end
-
 -- Should exclude 'class', 'columns'
 function S2cObjectBase:toSproto()
     local sproto = sp:host(self.getSprotoName());
     for i,v in pairs(self) do
         if type(v) ~= "function" and i ~= "class" and i~= "columns" then
-            print(i)
             sproto[i] = v;
         end
     end
