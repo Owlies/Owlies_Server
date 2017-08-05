@@ -1,10 +1,42 @@
 local skynet = require "skynet"
+local class = require "middleclass"
 
-local objectBase = {}
-objectBase.__index = objectBase;
+local ObjectBase = class("ObjectBase");
 
-function objectBase:getColumnNames()
-    local tableName = self.getTableName();
+function ObjectBase:initialize()
+    print("ObjectBase:initialize");
+    self.columns = ObjectBase.getColumnNames(self);
+end
+
+function ObjectBase:updateDB()
+    return ObjectBase.insertOnDuplicate(self);
+end
+
+function tryGetTableName(self)
+    local tableName = self:getTableName();
+    if tableName == nil then
+        print("Error insertOnDuplicate, tableName is nil");
+        print(self);
+    end
+
+    return tableName;
+end
+
+-- Should exclude 'class', 'columns'
+function ObjectBase:toSproto(sp)
+    local sproto = sp:host(self.getSprotoName());
+    for i,v in pairs(self) do
+        if type(v) ~= "function" and i ~= "class" and i~= "columns" then
+            print(i)
+            sproto[i] = v;
+        end
+    end
+
+    return sproto;
+end
+
+function ObjectBase:getColumnNames()
+    local tableName = self:getTableName();
     print("getColumnNames " .. tableName);
     local sql = "SHOW COLUMNS FROM " .. tableName .. ";";
     local success, columnNames = pcall(skynet.call, "db_service", "lua", "query", sql);
@@ -19,28 +51,19 @@ function objectBase:getColumnNames()
     return columns;
 end
 
-function objectBase:instantiate(sproto)
-    local newInstance = newInstance or {};
-    newInstance.properties = newInstance.properties or {};
-    setmetatable(newInstance, self)
-    return newInstance;
-end
-
-function objectBase:insertOnDuplicate()
-    local tableName = self.getTableName();
+function ObjectBase:insertOnDuplicate()
+    local tableName = tryGetTableName(self);
     if tableName == nil then
-        print("Error insertOnDuplicate, tableName is nil");
-        print(self);
         return;
     end
 
-    local primaryKeys = self.getPrimaryKeys();
+    local primaryKeys = self:getPrimaryKeys();
 
     local sql = "INSERT INTO " .. tableName .. " VALUES (";
 
     local columns = self.columns;
     for i = 1, #columns do
-        local value = self.properties[columns[i]];
+        local value = self[columns[i]];
         sql = sql .. "'" .. value .. "',";
     end
 
@@ -64,13 +87,13 @@ function objectBase:insertOnDuplicate()
     end
 
     for i = 1, #columnsToUpdate do
-        local value = self.properties[columnsToUpdate[i]];
+        local value = self[columnsToUpdate[i]];
         sql = sql .. columnsToUpdate[i] .. " = '" .. value .. "', ";
     end
     -- Remove last ', ' 
     sql = string.sub(sql, 1, -3) .. ";";
 
-    local success, columnNames = pcall(skynet.call, "db_service", "lua", "query", sql);
+    local success, result = pcall(skynet.call, "db_service", "lua", "query", sql);
     if not success then
         print("Failed to insertOnDuplicate " .. sql);
     end
@@ -78,4 +101,32 @@ function objectBase:insertOnDuplicate()
     return success;
 end
 
-return objectBase;
+function ObjectBase:loadByPrimaryKeys()
+    local tableName = tryGetTableName(self);
+    if tableName == nil then
+        return;
+    end
+
+    local primaryKeys = self:getPrimaryKeys();
+
+    local sql = "SELECT * FROM " .. tableName .. " WHERE ";
+    local count = #primaryKeys;
+
+    for i = 1, count do
+        sql = sql .. primaryKeys[i] .. " = '" .. self[primaryKeys[i]] .. "'";
+        if i >= 2 and i < count - 1 then
+            sql = sql .. "AND ";
+        end
+    end
+
+    sql = sql .. ";";
+
+    local success, result = pcall(skynet.call, "db_service", "lua", "query", sql);
+    if not success then
+        print("Failed to loadByPrimaryKeys " .. sql);
+    end
+
+    return success, result;
+end
+
+return ObjectBase;

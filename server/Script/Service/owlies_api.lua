@@ -4,6 +4,7 @@ local print_r = require "print_r"
 require "owlies_sproto_scheme"
 require "owlies_connection_manager"
 local loginRequestObject = require "login_request_object"
+local loginResponseObject = require "login_response_object"
 
 -- TODO(Huayu): Should contain Server2Clinet, but the test sproto is in Client2Server
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
@@ -28,12 +29,14 @@ local function processApiCall(sproto, sprotoType)
 	-- print_r(sproto);
 	pcall(skynet.call, "owlies_redis", "lua", "updateRedisSproto", testKey, sprotoType, sproto);
 	local success, obj = pcall(skynet.call, "owlies_redis", "lua", "loadRedisSproto", testKey, sprotoType);
-	-- print_r(obj)
+	print_r(obj)
 
 	local objb = loginRequestObject:new(sproto)
 	objb:insertOnDuplicate();
 	local sprotob = objb:toSproto();
-	-- print_r(sprotob);
+	print_r(sprotob);
+
+	local response = loginResponseObject:new(objb.user_id);
 
 	return stubResponse();
 end

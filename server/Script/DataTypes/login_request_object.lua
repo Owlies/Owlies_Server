@@ -1,44 +1,30 @@
-local c2sObjectBase = require "c2s_object_base"
+local class = require "middleclass"
+local C2sObjectBase = require "c2s_object_base"
 local sprotoNames = require "sproto_names";
 
-local loginRequestObject = {};
-setmetatable(loginRequestObject, c2sObjectBase);
-loginRequestObject.__index = loginRequestObject;
+local LoginRequestObject = class("LoginRequsetObject", C2sObjectBase);
+LoginRequestObject.timestamp = nil;
+LoginRequestObject.user_id = nil;
+LoginRequestObject.user_account = nil;
+LoginRequestObject.device_identifier = nil;
+LoginRequestObject.client_version = nil;
+LoginRequestObject.client_app_name = nil;
 
-local _properties = {};
-_properties = {};
-_properties.timestamp = nil;
-_properties.user_id = nil;
-_properties.user_account = nil;
-_properties.device_identifier = nil;
-_properties.client_version = nil;
-_properties.client_app_name = nil;
-
-loginRequestObject.properties = _properties;
-
-function loginRequestObject.getTableName()
+function LoginRequestObject:getTableName()
     return "user_login";
 end
 
-function loginRequestObject.getSprotoName()
+function LoginRequestObject:getSprotoName()
     return sprotoNames.LoginRequest;
 end
 
-function loginRequestObject.getPrimaryKeys()
+function LoginRequestObject:getPrimaryKeys()
     return {"user_id"};
 end
 
-function instantiate(sproto)
-    local newInstance = c2sObjectBase:instantiate(sproto);
-    setmetatable(newInstance, loginRequestObject)
-    return newInstance;
+function LoginRequestObject:initialize(sproto)
+    print("LoginRequestObject:initialize")
+    C2sObjectBase.initialize(self, sproto);
 end
 
-function loginRequestObject:new(sproto)
-    local instance = instantiate(sproto);
-    local columnNames = instance:getColumnNames();
-    loginRequestObject.columns = columnNames;
-    return instance;
-end
-
-return loginRequestObject;
+return LoginRequestObject;

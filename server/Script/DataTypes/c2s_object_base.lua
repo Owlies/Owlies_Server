@@ -1,31 +1,21 @@
-local objectBase = require "object_base"
+local class = require "middleclass"
+local ObjectBase = require "object_base"
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 
-local c2sObjectBase = {}
-setmetatable(c2sObjectBase, objectBase);
-c2sObjectBase.__index = c2sObjectBase;
+local C2sObjectBase = class("C2sObjectBase", ObjectBase);
 
-function c2sObjectBase:instantiate(sproto)
-    local newInstance = objectBase:instantiate(sproto);
-    newInstance.properties = newInstance.properties or {};
-
-    setmetatable(newInstance, self)
+function C2sObjectBase:initialize(sproto)
+    print("C2sObjectBase:initialize")
+    ObjectBase.initialize(self);
 
     for i,v in pairs(sproto) do
-        newInstance.properties[i] = v;
+        self[i] = v;
     end
-
-    return newInstance;
 end
 
-function c2sObjectBase:toSproto()
-    local sproto = sp:host(self.getSprotoName());
-    for i,v in pairs(self.properties) do
-        sproto[i] = v;
-    end
-    
-    return sproto;
+function C2sObjectBase:toSproto()
+    return ObjectBase.toSproto(self, sp);
 end
 
-return c2sObjectBase;
+return C2sObjectBase;
 
