@@ -79,3 +79,6 @@ setup DB and user
 Create alias
 Make sure /usr/local/mysqllinks to your /user/local/[what ever the mysql version]
 https://dev.mysql.com/doc/refman/5.7/en/c-api-building-clients.html
+
+### CJson
+Uncomment corresponding MakeFile section for your platform, and do make all

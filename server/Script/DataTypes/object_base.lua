@@ -22,19 +22,6 @@ function tryGetTableName(self)
     return tableName;
 end
 
--- Should exclude 'class', 'columns'
-function ObjectBase:toSproto(sp)
-    local sproto = sp:host(self.getSprotoName());
-    for i,v in pairs(self) do
-        if type(v) ~= "function" and i ~= "class" and i~= "columns" then
-            print(i)
-            sproto[i] = v;
-        end
-    end
-
-    return sproto;
-end
-
 function ObjectBase:getColumnNames()
     local tableName = self:getTableName();
     print("getColumnNames " .. tableName);
