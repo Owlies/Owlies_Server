@@ -1,7 +1,7 @@
 local skynet = require "skynet"
 local class = require "middleclass"
 local ObjectBase = require "object_base"
-local paker = require "packer"
+local packer = require "packer"
 local RedisObject = class("RedisObject", ObjectBase);
 
 function RedisObject:initialize()
@@ -12,9 +12,9 @@ end
 function RedisObject:getRedisKey()
     local primaryKeys = self:getPrimaryKeys();
 
-    local redisKey = nil;
-    for i,v in primaryKeys do
-        redisKey = redisKey .. v;
+    local redisKey = "";
+    for i,v in pairs(primaryKeys) do
+        redisKey = redisKey .. self[v].."_";
     end
 
     return redisKey;
@@ -25,8 +25,16 @@ function RedisObject:loadRedisCache()
 end
 
 function RedisObject:updateRedis()
-    local redisKey = getRedisKey();
-    local json = packer.pack(self);
+    local redisKey = RedisObject.getRedisKey(self);
+    local valueTable = {};
+
+    for i,v in pairs(self) do
+        if type(v) ~= "function" then
+            valueTable[i] = v;
+        end
+    end
+
+    local json = packer.pack(valueTable);
     print(json)
 end
 

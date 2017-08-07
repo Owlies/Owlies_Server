@@ -6,3 +6,9 @@ CREATE TABLE `user_login` (
   `client_app_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user_energy` (
+  `user_id` varchar(255) NOT NULL DEFAULT '',
+  `energy` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

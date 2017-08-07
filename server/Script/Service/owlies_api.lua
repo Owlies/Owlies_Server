@@ -37,7 +37,7 @@ local function processApiCall(sproto, sprotoType)
 	print_r(sprotob);
 
 	local response = loginResponseObject:new(objb.user_id);
-	-- objb:updateRedis();
+	objb:updateRedis();
 	return stubResponse();
 end
 
