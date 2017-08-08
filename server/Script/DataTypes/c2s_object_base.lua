@@ -1,12 +1,12 @@
 local class = require "middleclass"
-local RedisObject = require "redis_object"
+local ObjectBase = require "object_base"
 local sp = sprotoSchemes:Instance().getScheme("Client2Server");
 
-local C2sObjectBase = class("C2sObjectBase", RedisObject);
+local C2sObjectBase = class("C2sObjectBase", ObjectBase);
 
 function C2sObjectBase:initialize(sproto)
     print("C2sObjectBase:initialize")
-    RedisObject.initialize(self);
+    ObjectBase.initialize(self);
 
     for i,v in pairs(sproto) do
         self[i] = v;

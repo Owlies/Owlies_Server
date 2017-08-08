@@ -6,12 +6,29 @@ local redisAddr = skynet.getenv("redisAddress");
 local redisPort = skynet.getenv("redisPort");
 
 local conf = {
-	host = redisAddr ,
+	host = redisAddr,
 	port = redisPort
 }
 
 local Methods = {};
 local redisContext = {};
+
+function Methods.set(key, value)
+	print("redis_set" .. key .. ", " .. value)
+	redisContext:set(key, value);
+end
+
+function Methods.get(key)
+	return redisContext:get(key);
+end
+
+function Methods.del(key)
+	redisContext:del(key);
+end
+
+function Methods.exists(key)
+	return redisContext:exists(key);
+end
 
 skynet.start(function()
     redisContext = redis.connect(conf);

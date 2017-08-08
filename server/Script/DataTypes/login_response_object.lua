@@ -24,28 +24,14 @@ function loginResponseObject:initialize(user_id)
     print("loginResponseObject:initialize")
     self.user_id = user_id;
 
-    local success, result = S2cObjectBase.initialize(self);
-    if success == false then
-        print("Error: Failed to load login response for user " .. user_id);
-        return;
+    local result = S2cObjectBase.initialize(self);
+    if result == nil then
+        print("Failed to load object from " .. loginResponseObject:getTableName() .. ", user_id " .. user_id);
+        return nil;
     end
 
-    if #result == 0 then
-        self.energy = initialEnergy;
-        S2cObjectBase.updateDB(self);
-        return;
-    end
-
-    if #result ~= 1 then
-        print("Error: Found two rows for user " .. user_id);
-        return;
-    end
-
-    -- Should only have 1 row
-    for index,row in pairs(result) do
-        for columnName,value in pairs(row) do
-            self[columnName] = value;
-        end
+    for i,v in pairs(result) do
+        self[i] = v;
     end
 end
 

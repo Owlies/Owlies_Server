@@ -4,11 +4,6 @@ local sp = sprotoSchemes:Instance().getScheme("Server2Client");
 
 local S2cObjectBase = class("S2cObjectBase", RedisObject);
 
-function S2cObjectBase:initialize()
-    RedisObject.initialize(self);
-    return RedisObject.loadByPrimaryKeys(self);
-end
-
 -- Should exclude 'class', 'columns'
 function S2cObjectBase:toSproto()
     local sproto = sp:host(self.getSprotoName());
