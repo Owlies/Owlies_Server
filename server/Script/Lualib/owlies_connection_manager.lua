@@ -3,8 +3,8 @@ local print_r = require "print_r"
 local cmCore = require "connectionManager"
 
 require "owlies_sproto_scheme"
-local sp = sprotoSchemes:Instance().getScheme("Client2Server");
-
+local c2sSp = sprotoSchemes:Instance().getScheme("Client2Server");
+local s2cSp = sprotoSchemes:Instance().getScheme("Server2Client");
 
 -- Singleton Model --
 connectionManager = {};
@@ -20,8 +20,8 @@ function connectionManager.Instance()
         return deserialize(message, size);
     end
 
-    _instance.serialize = function(sprotoObj, typeString)
-        return serialize(sprotoObj, typeString);
+    _instance.serialize = function(sprotoObj, typeString, serverSession)
+        return serialize(sprotoObj, typeString, serverSession);
     end
  
     return _instance
@@ -37,10 +37,10 @@ function deserialize(message, size)
     local session, messageType, messageName, messageNameLen, msg = cmCore.unpackMessage(message);
     local sz = size - 7 - messageNameLen;
 
-    if not sp:exist_type(messageName) then 
+    if not c2sSp:exist_type(messageName) then 
         print("Can't find sproto with typename: ", messageName);
     end
-    local obj = sp:decode(messageName, msg, sz);
+    local obj = c2sSp:decode(messageName, msg, sz);
 
     return obj, session, messageType, messageName;
 end
@@ -48,6 +48,11 @@ end
 function serialize(messageName, sprotoObj, serverSession)
     assert(type(messageName) == "string");
     assert(type(sprotoObj) == "table");
+    local sp = c2sSp;
+    if not sp:exist_type(messageName) then
+        sp = s2cSp;
+    end
+
     local code = sp:encode(messageName, sprotoObj);
     local package = cmCore.packMessage(messageName, serverSession, code);
     return package;

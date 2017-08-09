@@ -7,49 +7,26 @@ local loginRequestObject = require "login_request_object"
 local loginResponseObject = require "login_response_object"
 
 -- TODO(Huayu): Should contain Server2Clinet, but the test sproto is in Client2Server
-local sp = sprotoSchemes:Instance().getScheme("Client2Server");
+local c2sSp = sprotoSchemes:Instance().getScheme("Client2Server");
+local s2cSp = sprotoSchemes:Instance().getScheme("Server2Client");
+
 local connectionManager = connectionManager:Instance();
 local sprotoNames = require "sproto_names"
 
 local CMD ={}
 local networkSessionMap = {}
 
--- TODO(Huayu): Remove
-local testKey = "huayu"
-
-local function stubResponse()
-	local person = sp:host("Person");
-	person.name = "Huayu";
-	person.id = 5000;
-	person.phone = {number = "222222", type = 3};
-	return connectionManager.Instance().serialize("Person", person, 100);
-end
-
 local function processApiCall(sproto, sprotoType)
-	-- print_r(sproto);
-	-- pcall(skynet.call, "owlies_redis", "lua", "updateRedisSproto", testKey, sprotoType, sproto);
-	-- local success, obj = pcall(skynet.call, "owlies_redis", "lua", "loadRedisSproto", testKey, sprotoType);
-	-- print_r(obj)
-	print("----------------------------------------------------------------")
-	local objb = loginRequestObject:new(sproto)
-	objb:insertOnDuplicate();
-	local sprotob = objb:toSproto();
-	print_r(sprotob);
-	print("----------------------------------------------------------------")
-	local response = loginResponseObject:new(objb.user_id);
-	print("----------------------------------------------------------------")
-	for i,v in pairs(response) do
-        print(i)
-		print(v)
-    end
-	print("----------------------------------------------------------------")
-	local responseSproto = response:toSproto();
-	for i,v in pairs(responseSproto) do
-        print(i)
-		print(v)
-    end
-	print("----------------------------------------------------------------")
-	return stubResponse();
+	if sprotoType == sprotoNames.LoginRequest then
+		local objb = loginRequestObject:new(sproto)
+		objb:insertOnDuplicate();
+		local sprotob = objb:toSproto();
+		local response = loginResponseObject:new(objb.user_id);
+		local responseSproto = response:toSproto();
+		local result = connectionManager.Instance().serialize("LoginResponse", responseSproto, 100);
+		return result;
+	end
+	return nil;
 end
 
 function updateClientSession(clientFd, clientSession)

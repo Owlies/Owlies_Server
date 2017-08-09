@@ -1,5 +1,4 @@
 .LoginResponse {
     user_id 0 : string
-    timestamp 1 : string
-    energy 2 : integer
+    energy 1 : integer
 }
